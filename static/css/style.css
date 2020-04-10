@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400;600&display=swap');
+
+/* Background */
+
+.bg {
+    height: 100vh;
+    background-color: #f4f4f4;
+    font-family: 'Baloo Thambi 2', cursive;
+    font-weight: 400;
+}

@@ -10,6 +10,8 @@ $(document).ready(function() {
     player.maxHp = 100;
     player.power = 10;
 
+    // Helper Functions
+
     // getDieRoll takes amount of "sides" as a parameter
 
     function getDiceRoll(x) {
@@ -25,6 +27,34 @@ $(document).ready(function() {
     function areYouDead(hp) {
         return hp <= 0;
     }
+
+
+    // Gameplay Flow
+
+
+    $("#name-sumbit").click(function() {
+
+        // Checks name has value (Trimmed in case of whitespace)
+
+        var playerName = $("#player-name").val();
+
+        if ($.trim(playerName) == '') {
+            alert('You surely must have a name!');
+        } else {
+            player.name = playerName;
+            console.log(player.name)
+        }
+    });
+
+    $("#checkPlayer").click(function() {
+        console.log(player)
+    });
+
+    $("#rollD6").click(function() {
+        var result = getDiceRoll(6);
+        console.log(result)
+        $("#d6").text(result);
+    });
 
     // Save System
 
