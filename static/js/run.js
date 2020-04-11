@@ -10,6 +10,13 @@ $(document).ready(function() {
     player.maxHp = 100;
     player.power = 10;
 
+    // Enemy Object 
+
+    var enemy = new Object();
+    enemy.name = "Steve";
+    enemy.maxHp = 100;
+    enemy.power = 10;
+
     // Helper Functions
 
     // getDieRoll takes amount of "sides" as a parameter
@@ -44,16 +51,38 @@ $(document).ready(function() {
             player.name = playerName;
         }
         if (typeof player.name !== "undefined") {
-            $("#startCombat").fadeIn("slow");
-            $("#savedName").text(player.name);
+            $("#playerName").text(player.name);
+            $("#playerHealth").text(player.maxHp);
+            setTimeout(function() {
+                $("#startCombat").fadeIn("slow");
+                $(".stat-nav").fadeIn("slow");
+            }, 1000);
         }
     });
 
     $("#startCombat").click(function() {
         $(".name").fadeOut("slow");
+        $("#enemyName").text(enemy.name);
+        $("#enemyHealth").text(enemy.maxHp);
         setTimeout(function() {
             $(".combat").fadeIn("slow");
         }, 1000);
+    })
+
+
+    $("#attackButton").click(function() {
+        // Player Attack 
+
+        let baseDmg = getDiceRoll(player.power);
+        let modDmg = getDiceRoll(baseDmg) * 2;
+        let attackDmg = attack(baseDmg, modDmg);
+
+        // Reduces enemy health and displays results
+        console.log(enemy.maxHp, attackDmg)
+
+        enemy.maxHp -= attackDmg;
+
+        $("#enemyHealth").html(enemy.maxHp);
     })
 
 

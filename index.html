@@ -13,14 +13,28 @@
 
 <body>
     <div class="bg">
+
         <div class="container">
+
+            <section id="navbar">
+                <div class="stat-nav">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <p>Name: <span id="playerName"></span></p>
+                        </div>
+                        <div class="col-4">
+                            <p>Health: <span id="playerHealth"></span></p>
+                        </div>
+                        <div class="col-4"></div>
+                    </div>
+                </div>
+            </section>
 
 
             <section class="header">
                 <div class="row">
-                    <div class="col-12 mt-5">
+                    <div class="col-12 mt-2">
                         <h1>NU Game!</h1>
-                        <p id="savedName"></p>
                     </div>
                 </div>
             </section>
@@ -44,10 +58,17 @@
             </section>
 
             <section class="combat">
+                <div class="row text-center">
+                    <div class="col-6">
+                        <p>Enemy: <span id="enemyName"></span></p>
+                    </div>
+                    <div class="col-6">
+                        <p>Enemy Health: <span id="enemyHealth"></span></p>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12">
-                        <button class="btn btn-success" id="rollD6">Roll A D6</button>
-                        <p id="d6"></p>
+                        <button class="btn btn-success" id="attackButton">Attack</button>
                     </div>
                 </div>
             </section>

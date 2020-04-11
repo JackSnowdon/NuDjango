@@ -10,9 +10,32 @@
 }
 
 
+/* NavBar */
+
+.navbar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+}
+
+.navbar li a:hover {
+    color: white;
+}
+
+.stat-nav {
+    padding: 16px 8px;
+}
+
+
 /* Conbat */
 
 .combat,
+.stat-nav,
 #startCombat {
     display: none;
 }
