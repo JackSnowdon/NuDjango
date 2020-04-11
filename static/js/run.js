@@ -8,14 +8,14 @@ $(document).ready(function() {
 
     var player = new Object();
     player.maxHp = 100;
-    player.power = 25;
+    player.power = 50;
 
     // Enemy Object
 
     var enemy = new Object();
     enemy.name = "Steve";
     enemy.maxHp = 100;
-    enemy.power = 55;
+    enemy.power = 10;
 
     // Helper Functions
 
@@ -29,6 +29,26 @@ $(document).ready(function() {
         return base + power;
     }
 
+    function basicAttack(p) {
+        let baseDmg = getDiceRoll(p);
+        let modDmg = getDiceRoll(baseDmg) * 2;
+        let aDmg = attack(baseDmg, modDmg);
+        return aDmg
+    }
+
+    // Start Combat 
+
+    function startCombat() {
+        $(".name").fadeOut("slow");
+        $(".buttons").fadeOut("slow");
+        $("#enemyName").text(enemy.name);
+        $("#enemyHealth").text(enemy.maxHp);
+        setTimeout(function() {
+            $(".combat").fadeIn("slow");
+        }, 1000);
+        $("#attackButton").attr("disabled", false);
+    }
+
     // Checker for endgame
 
     function areYouDead(hp) {
@@ -39,19 +59,16 @@ $(document).ready(function() {
 
     function resetStats() {
         player.maxHp = 100;
-        enemy.maxHp = 100;
         $("#enemyHealth").html(enemy.maxHp);
         $("#playerHealth").html(player.maxHp);
+        $(".combat").fadeOut("slow");
+        $(".buttons").fadeIn("slow");
     }
-
 
     // Gameplay Flow
 
-
     $("#name-sumbit").click(function() {
-
         // Checks name has value (Trimmed in case of whitespace)
-
         var playerName = $("#player-name").val();
 
         if ($.trim(playerName) == '') {
@@ -69,23 +86,29 @@ $(document).ready(function() {
         }
     });
 
-    $("#startCombat").click(function() {
-        $(".name").fadeOut("slow");
-        $(".buttons").fadeOut("slow");
-        $("#enemyName").text(enemy.name);
-        $("#enemyHealth").text(enemy.maxHp);
-        setTimeout(function() {
-            $(".combat").fadeIn("slow");
-        }, 1000);
+    $("#startEasy").click(function() {
+        enemy.name = "Easy";
+        enemy.maxHp = 100;
+        startCombat();
     })
 
+    $("#startMedium").click(function() {
+        enemy.name = "Medium";
+        enemy.maxHp = 150;
+        startCombat();
+    })
+
+    $("#startHard").click(function() {
+        enemy.name = "Hard";
+        enemy.maxHp = 200;
+        startCombat();
+    })
 
     $("#attackButton").click(function() {
-        // Player Attack 
+        $("#attackButton").attr("disabled", true);
 
-        let baseDmg = getDiceRoll(player.power);
-        let modDmg = getDiceRoll(baseDmg) * 2;
-        let attackDmg = attack(baseDmg, modDmg);
+        // Player Attack 
+        attackDmg = basicAttack(player.power)
 
         // Reduces enemy health and displays results
         enemy.maxHp -= attackDmg;
@@ -95,33 +118,25 @@ $(document).ready(function() {
         if (areYouDead(enemy.maxHp)) {
             $("#enemyHealth").html(0);
             setTimeout(function() {
-                $(".combat").fadeOut("slow");
-                $(".buttons").fadeIn("slow");
                 resetStats();
             }, 1500);
             return;
-
         }
-
-        $("#attackButton").attr("disabled", true);
 
         // Enemy Attack
 
         setTimeout(function() {
-            let eBaseDmg = getDiceRoll(enemy.power);
-            let eModDmg = getDiceRoll(eBaseDmg) * 2;
-            let eAttackDmg = attack(eBaseDmg, eModDmg);
+            eAttackDmg = basicAttack(enemy.power);
 
             player.maxHp -= eAttackDmg;
             $("#playerHealth").text(player.maxHp);
 
             if (areYouDead(player.maxHp)) {
                 $("#playerHealth").html(0);
-                $(".combat").fadeOut("slow");
                 setTimeout(function() {
-                    $(".buttons").fadeIn("slow");
                     resetStats()
                 }, 1500)
+                return;
             }
 
             $("#attackButton").attr("disabled", false);
