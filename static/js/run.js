@@ -8,14 +8,14 @@ $(document).ready(function() {
 
     var player = new Object();
     player.maxHp = 100;
-    player.power = 10;
+    player.power = 25;
 
-    // Enemy Object 
+    // Enemy Object
 
     var enemy = new Object();
     enemy.name = "Steve";
     enemy.maxHp = 100;
-    enemy.power = 10;
+    enemy.power = 55;
 
     // Helper Functions
 
@@ -33,6 +33,15 @@ $(document).ready(function() {
 
     function areYouDead(hp) {
         return hp <= 0;
+    }
+
+    // Restart 
+
+    function resetStats() {
+        player.maxHp = 100;
+        enemy.maxHp = 100;
+        $("#enemyHealth").html(enemy.maxHp);
+        $("#playerHealth").html(player.maxHp);
     }
 
 
@@ -54,7 +63,7 @@ $(document).ready(function() {
             $("#playerName").text(player.name);
             $("#playerHealth").text(player.maxHp);
             setTimeout(function() {
-                $("#startCombat").fadeIn("slow");
+                $(".buttons").fadeIn("slow");
                 $(".stat-nav").fadeIn("slow");
             }, 1000);
         }
@@ -62,6 +71,7 @@ $(document).ready(function() {
 
     $("#startCombat").click(function() {
         $(".name").fadeOut("slow");
+        $(".buttons").fadeOut("slow");
         $("#enemyName").text(enemy.name);
         $("#enemyHealth").text(enemy.maxHp);
         setTimeout(function() {
@@ -78,11 +88,45 @@ $(document).ready(function() {
         let attackDmg = attack(baseDmg, modDmg);
 
         // Reduces enemy health and displays results
-        console.log(enemy.maxHp, attackDmg)
-
         enemy.maxHp -= attackDmg;
-
         $("#enemyHealth").html(enemy.maxHp);
+
+        // Checks if enemy HP is below 0 and ends combat
+        if (areYouDead(enemy.maxHp)) {
+            $("#enemyHealth").html(0);
+            setTimeout(function() {
+                $(".combat").fadeOut("slow");
+                $(".buttons").fadeIn("slow");
+                resetStats();
+            }, 1500);
+            return;
+
+        }
+
+        $("#attackButton").attr("disabled", true);
+
+        // Enemy Attack
+
+        setTimeout(function() {
+            let eBaseDmg = getDiceRoll(enemy.power);
+            let eModDmg = getDiceRoll(eBaseDmg) * 2;
+            let eAttackDmg = attack(eBaseDmg, eModDmg);
+
+            player.maxHp -= eAttackDmg;
+            $("#playerHealth").text(player.maxHp);
+
+            if (areYouDead(player.maxHp)) {
+                $("#playerHealth").html(0);
+                $(".combat").fadeOut("slow");
+                setTimeout(function() {
+                    $(".buttons").fadeIn("slow");
+                    resetStats()
+                }, 1500)
+            }
+
+            $("#attackButton").attr("disabled", false);
+
+        }, 1500);
     })
 
 
