@@ -8,3 +8,19 @@
     font-family: 'Baloo Thambi 2', cursive;
     font-weight: 400;
 }
+
+
+/* Conbat */
+
+.combat,
+#startCombat {
+    display: none;
+}
+
+
+/* Forms */
+
+.name-form {
+    display: inline-block;
+    width: 100%;
+}

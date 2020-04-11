@@ -42,17 +42,23 @@ $(document).ready(function() {
             alert('You surely must have a name!');
         } else {
             player.name = playerName;
-            console.log(player.name)
+        }
+        if (typeof player.name !== "undefined") {
+            $("#startCombat").fadeIn("slow");
+            $("#savedName").text(player.name);
         }
     });
 
-    $("#checkPlayer").click(function() {
-        console.log(player)
-    });
+    $("#startCombat").click(function() {
+        $(".name").fadeOut("slow");
+        setTimeout(function() {
+            $(".combat").fadeIn("slow");
+        }, 1000);
+    })
+
 
     $("#rollD6").click(function() {
         var result = getDiceRoll(6);
-        console.log(result)
         $("#d6").text(result);
     });
 
