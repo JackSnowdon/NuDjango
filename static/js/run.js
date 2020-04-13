@@ -10,6 +10,7 @@ $(document).ready(function() {
     player.maxHp = 100;
     player.currentHp = 100;
     player.power = 10;
+    player.speed = 20;
 
     // Enemy Object
 
@@ -67,39 +68,63 @@ $(document).ready(function() {
         $("#attackButton").attr("disabled", false);
     }
 
-    function playerAttackTurn() {
-        // Rolls for a crictal chance 
+    function doesAttackHit(a, d) {
+        let aSpeed = (getDiceRoll(a.speed) + a.speed)
+        let dSpeed = (getDiceRoll(d.speed) + getDiceRoll(d.speed))
+        console.log(aSpeed, dSpeed)
+        if (aSpeed >= dSpeed) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function playerAttack() {
+        // Empties Crit and disables attack button
 
         $("#attackButton").attr("disabled", true);
         $("#enemyCrit").empty()
-        if (getDiceRoll(100) > 80) {
-            $("#playerCrit").show().text("Crit!").css("color", "red");
-            attackDmg = basicAttack(enemy.power) * 5;
+
+        // Check To Hit
+
+        if (doesAttackHit(player, enemy)) {
+
+            // Check for Crit
+
+            if (getDiceRoll(100) > 80) {
+                $("#playerCrit").show().text("Crit!").css("color", "red");
+                attackDmg = basicAttack(enemy.power) * 5;
+            } else {
+                attackDmg = basicAttack(enemy.power);
+            }
+
+            // Reduces enemy health and displays results
+
+            enemy.currentHp -= attackDmg;
+            $("#playerHitResult").html(player.name + " Hit The Enemy for " + attackDmg + " Hit Points!");
+            $("#enemyHealth").html(enemy.currentHp);
         } else {
-            attackDmg = basicAttack(enemy.power);
+            $("#playerHitResult").html(player.name + " Misses " + enemy.name);
         }
-        // Reduces enemy health and displays results
-        enemy.currentHp -= attackDmg;
-        $("#playerHitResult").html(player.name + " Hit The Enemy for " + attackDmg + " Hit Points!");
-        $("#enemyHealth").html(enemy.currentHp);
     }
 
-
-    function enemyAttackTurn() {
-        // Rolls for a crictal chance 
+    function enemyAttack() {
         $("#playerCrit").empty()
-        if (getDiceRoll(100) > 80) {
-            $("#enemyCrit").show().text("Crit!").css("color", "red");
-            eAttackDmg = basicAttack(enemy.power) * 5;
+        if (doesAttackHit(enemy, player)) {
+            if (getDiceRoll(100) > 80) {
+                $("#enemyCrit").show().text("Crit!").css("color", "red");
+                eAttackDmg = basicAttack(enemy.power) * 5;
+            } else {
+                eAttackDmg = basicAttack(enemy.power);
+            }
+            player.currentHp -= eAttackDmg;
+            $("#enemyHitResult").html(enemy.name + " Hit " + player.name + " for " + eAttackDmg + " Hit Points!");
+            $("#playerHealth").text(player.currentHp);
         } else {
-            eAttackDmg = basicAttack(enemy.power);
+            $("#enemyHitResult").html(enemy.name + " Misses " + player.name);
         }
-        player.currentHp -= eAttackDmg;
-        $("#enemyHitResult").html(enemy.name + " Hit " + player.name + " for " + eAttackDmg + " Hit Points!");
-        $("#playerHealth").text(player.currentHp);
         $("#attackButton").attr("disabled", false);
     }
-
 
     // Endgame checker
 
@@ -147,27 +172,30 @@ $(document).ready(function() {
         enemy.name = "Easy";
         enemy.currentHp = 100;
         enemy.maxHp = 100;
+        enemy.speed = 15;
         startCombat();
     })
 
     $("#startMedium").click(function() {
         enemy.name = "Medium";
-        enemy.currentHp = 150;
-        enemy.maxHp = 150;
+        enemy.currentHp = 125;
+        enemy.maxHp = 125;
+        enemy.speed = 20;
         startCombat();
     })
 
     $("#startHard").click(function() {
         enemy.name = "Hard";
-        enemy.currentHp = 200;
-        enemy.maxHp = 200;
+        enemy.currentHp = 150;
+        enemy.maxHp = 150;
+        enemy.speed = 25;
         startCombat();
     })
 
     // Player Attack
 
     $("#attackButton").click(function() {
-        playerAttackTurn();
+        playerAttack();
         // Checks if enemy HP is below 0 and ends combat
         if (areYouDead(enemy.currentHp)) {
             $("#enemyHealth").html(0);
@@ -181,8 +209,9 @@ $(document).ready(function() {
         // Enemy Attack
 
         setTimeout(function() {
-            enemyAttackTurn();
+            enemyAttack();
             if (areYouDead(player.currentHp)) {
+                $("#attackButton").attr("disabled", true);
                 $("#playerHealth").html(0);
                 $("#winnerResult").html(enemy.name + " Wins!");
                 setTimeout(function() {
