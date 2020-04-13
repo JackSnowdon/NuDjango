@@ -19,7 +19,23 @@ $(document).ready(function() {
     enemy.currentHp = 100;
     enemy.power = 10;
 
-    // Helper Functions
+    // Setup Functions
+
+    function setPlayerStats(x) {
+        $("#playerName").text(player.name);
+        player.currentHp = x;
+        player.maxHp = x;
+        $("#playerHealth").text(player.currentHp);
+        $("#playerMaxHp").text(player.maxHp)
+    }
+
+    function emptyResults() {
+        $("#winnerResult").empty();
+        $("#playerHitResult").empty();
+        $("#enemyHitResult").empty();
+    }
+
+    // Combat Functions
 
     // getDieRoll takes amount of "sides" as a parameter
 
@@ -38,22 +54,6 @@ $(document).ready(function() {
         return aDmg
     }
 
-    function setPlayerStats(x) {
-        $("#playerName").text(player.name);
-        player.currentHp = x;
-        player.maxHp = x;
-        $("#playerHealth").text(player.currentHp);
-        $("#playerMaxHp").text(player.maxHp)
-    }
-
-    function emptyResults() {
-        $("#winnerResult").empty();
-        $("#playerHitResult").empty();
-        $("#enemyHitResult").empty();
-    }
-
-    // Start Combat 
-
     function startCombat() {
         emptyResults()
         $("#hitresults").show();
@@ -67,7 +67,41 @@ $(document).ready(function() {
         $("#attackButton").attr("disabled", false);
     }
 
-    // Checker for endgame
+    function playerAttackTurn() {
+        // Rolls for a crictal chance 
+
+        $("#attackButton").attr("disabled", true);
+        $("#enemyCrit").empty()
+        if (getDiceRoll(100) > 80) {
+            $("#playerCrit").show().text("Crit!").css("color", "red");
+            attackDmg = basicAttack(enemy.power) * 5;
+        } else {
+            attackDmg = basicAttack(enemy.power);
+        }
+        // Reduces enemy health and displays results
+        enemy.currentHp -= attackDmg;
+        $("#playerHitResult").html(player.name + " Hit The Enemy for " + attackDmg + " Hit Points!");
+        $("#enemyHealth").html(enemy.currentHp);
+    }
+
+
+    function enemyAttackTurn() {
+        // Rolls for a crictal chance 
+        $("#playerCrit").empty()
+        if (getDiceRoll(100) > 80) {
+            $("#enemyCrit").show().text("Crit!").css("color", "red");
+            eAttackDmg = basicAttack(enemy.power) * 5;
+        } else {
+            eAttackDmg = basicAttack(enemy.power);
+        }
+        player.currentHp -= eAttackDmg;
+        $("#enemyHitResult").html(enemy.name + " Hit " + player.name + " for " + eAttackDmg + " Hit Points!");
+        $("#playerHealth").text(player.currentHp);
+        $("#attackButton").attr("disabled", false);
+    }
+
+
+    // Endgame checker
 
     function areYouDead(hp) {
         return hp <= 0;
@@ -81,6 +115,8 @@ $(document).ready(function() {
         $("#enemyHealth").html(enemy.maxHp);
         $("#playerHealth").html(player.currentHp);
         $(".combat").fadeOut("slow");
+        $("#enemyCrit").empty()
+        $("#playerCrit").empty()
         setTimeout(function() {
             $(".buttons").fadeIn("slow");
         }, 1500)
@@ -128,23 +164,14 @@ $(document).ready(function() {
         startCombat();
     })
 
+    // Player Attack
+
     $("#attackButton").click(function() {
-        $("#attackButton").attr("disabled", true);
-
-        // Player Attack 
-        attackDmg = basicAttack(player.power)
-
-        // Reduces enemy health and displays results
-        enemy.currentHp -= attackDmg;
-
-        $("#playerHitResult").html(player.name + " Hit The Enemy for " + attackDmg + " Hit Points!");
-
-        $("#enemyHealth").html(enemy.currentHp);
-
+        playerAttackTurn();
         // Checks if enemy HP is below 0 and ends combat
         if (areYouDead(enemy.currentHp)) {
-            $("#winnerResult").html(player.name + " Wins!");
             $("#enemyHealth").html(0);
+            $("#winnerResult").html(player.name + " Wins!");
             setTimeout(function() {
                 resetStats();
             }, 1500);
@@ -154,14 +181,7 @@ $(document).ready(function() {
         // Enemy Attack
 
         setTimeout(function() {
-            eAttackDmg = basicAttack(enemy.power);
-
-            player.currentHp -= eAttackDmg;
-
-            $("#enemyHitResult").html(enemy.name + " Hit " + player.name + " for " + eAttackDmg + " Hit Points!");
-
-            $("#playerHealth").text(player.currentHp);
-
+            enemyAttackTurn();
             if (areYouDead(player.currentHp)) {
                 $("#playerHealth").html(0);
                 $("#winnerResult").html(enemy.name + " Wins!");
@@ -170,12 +190,8 @@ $(document).ready(function() {
                 }, 1500)
                 return;
             }
-
-            $("#attackButton").attr("disabled", false);
-
         }, 1000);
     })
-
 
     $("#rollD6").click(function() {
         var result = getDiceRoll(6);
