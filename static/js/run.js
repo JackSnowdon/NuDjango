@@ -8,13 +8,15 @@ $(document).ready(function() {
 
     var player = new Object();
     player.maxHp = 100;
-    player.power = 50;
+    player.currentHp = 100;
+    player.power = 10;
 
     // Enemy Object
 
     var enemy = new Object();
     enemy.name = "Steve";
     enemy.maxHp = 100;
+    enemy.currentHp = 100;
     enemy.power = 10;
 
     // Helper Functions
@@ -36,13 +38,21 @@ $(document).ready(function() {
         return aDmg
     }
 
+    function setPlayerStats(x) {
+        $("#playerName").text(player.name);
+        player.currentHp = x;
+        player.maxHp = x;
+        $("#playerHealth").text(player.currentHp);
+        $("#playerMaxHp").text(player.maxHp)
+    }
+
     // Start Combat 
 
     function startCombat() {
-        $(".name").fadeOut("slow");
         $(".buttons").fadeOut("slow");
         $("#enemyName").text(enemy.name);
-        $("#enemyHealth").text(enemy.maxHp);
+        $("#enemyHealth").text(enemy.currentHp);
+        $("#enemyMaxHp").text(enemy.maxHp);
         setTimeout(function() {
             $(".combat").fadeIn("slow");
         }, 1000);
@@ -58,9 +68,9 @@ $(document).ready(function() {
     // Restart 
 
     function resetStats() {
-        player.maxHp = 100;
+        player.currentHp = player.maxHp;
         $("#enemyHealth").html(enemy.maxHp);
-        $("#playerHealth").html(player.maxHp);
+        $("#playerHealth").html(player.currentHp);
         $(".combat").fadeOut("slow");
         $(".buttons").fadeIn("slow");
     }
@@ -70,15 +80,15 @@ $(document).ready(function() {
     $("#name-sumbit").click(function() {
         // Checks name has value (Trimmed in case of whitespace)
         var playerName = $("#player-name").val();
-
+        $(".name").fadeOut("slow");
         if ($.trim(playerName) == '') {
             alert('You surely must have a name!');
+            $(".name").fadeIn("slow");
         } else {
             player.name = playerName;
         }
         if (typeof player.name !== "undefined") {
-            $("#playerName").text(player.name);
-            $("#playerHealth").text(player.maxHp);
+            setPlayerStats(100);
             setTimeout(function() {
                 $(".buttons").fadeIn("slow");
                 $(".stat-nav").fadeIn("slow");
@@ -88,18 +98,21 @@ $(document).ready(function() {
 
     $("#startEasy").click(function() {
         enemy.name = "Easy";
+        enemy.currentHp = 100;
         enemy.maxHp = 100;
         startCombat();
     })
 
     $("#startMedium").click(function() {
         enemy.name = "Medium";
+        enemy.currentHp = 150;
         enemy.maxHp = 150;
         startCombat();
     })
 
     $("#startHard").click(function() {
         enemy.name = "Hard";
+        enemy.currentHp = 200;
         enemy.maxHp = 200;
         startCombat();
     })
@@ -111,11 +124,11 @@ $(document).ready(function() {
         attackDmg = basicAttack(player.power)
 
         // Reduces enemy health and displays results
-        enemy.maxHp -= attackDmg;
-        $("#enemyHealth").html(enemy.maxHp);
+        enemy.currentHp -= attackDmg;
+        $("#enemyHealth").html(enemy.currentHp);
 
         // Checks if enemy HP is below 0 and ends combat
-        if (areYouDead(enemy.maxHp)) {
+        if (areYouDead(enemy.currentHp)) {
             $("#enemyHealth").html(0);
             setTimeout(function() {
                 resetStats();
@@ -128,10 +141,10 @@ $(document).ready(function() {
         setTimeout(function() {
             eAttackDmg = basicAttack(enemy.power);
 
-            player.maxHp -= eAttackDmg;
-            $("#playerHealth").text(player.maxHp);
+            player.currentHp -= eAttackDmg;
+            $("#playerHealth").text(player.currentHp);
 
-            if (areYouDead(player.maxHp)) {
+            if (areYouDead(player.currentHp)) {
                 $("#playerHealth").html(0);
                 setTimeout(function() {
                     resetStats()
@@ -141,7 +154,7 @@ $(document).ready(function() {
 
             $("#attackButton").attr("disabled", false);
 
-        }, 1500);
+        }, 1000);
     })
 
 
