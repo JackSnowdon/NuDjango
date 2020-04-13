@@ -46,9 +46,17 @@ $(document).ready(function() {
         $("#playerMaxHp").text(player.maxHp)
     }
 
+    function emptyResults() {
+        $("#winnerResult").empty();
+        $("#playerHitResult").empty();
+        $("#enemyHitResult").empty();
+    }
+
     // Start Combat 
 
     function startCombat() {
+        emptyResults()
+        $("#hitresults").show();
         $(".buttons").fadeOut("slow");
         $("#enemyName").text(enemy.name);
         $("#enemyHealth").text(enemy.currentHp);
@@ -69,10 +77,13 @@ $(document).ready(function() {
 
     function resetStats() {
         player.currentHp = player.maxHp;
+        $("#hitresults").fadeOut("slow");
         $("#enemyHealth").html(enemy.maxHp);
         $("#playerHealth").html(player.currentHp);
         $(".combat").fadeOut("slow");
-        $(".buttons").fadeIn("slow");
+        setTimeout(function() {
+            $(".buttons").fadeIn("slow");
+        }, 1500)
     }
 
     // Gameplay Flow
@@ -125,10 +136,14 @@ $(document).ready(function() {
 
         // Reduces enemy health and displays results
         enemy.currentHp -= attackDmg;
+
+        $("#playerHitResult").html(player.name + " Hit The Enemy for " + attackDmg + " Hit Points!");
+
         $("#enemyHealth").html(enemy.currentHp);
 
         // Checks if enemy HP is below 0 and ends combat
         if (areYouDead(enemy.currentHp)) {
+            $("#winnerResult").html(player.name + " Wins!");
             $("#enemyHealth").html(0);
             setTimeout(function() {
                 resetStats();
@@ -142,10 +157,14 @@ $(document).ready(function() {
             eAttackDmg = basicAttack(enemy.power);
 
             player.currentHp -= eAttackDmg;
+
+            $("#enemyHitResult").html(enemy.name + " Hit " + player.name + " for " + eAttackDmg + " Hit Points!");
+
             $("#playerHealth").text(player.currentHp);
 
             if (areYouDead(player.currentHp)) {
                 $("#playerHealth").html(0);
+                $("#winnerResult").html(enemy.name + " Wins!");
                 setTimeout(function() {
                     resetStats()
                 }, 1500)
