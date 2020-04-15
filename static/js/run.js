@@ -68,6 +68,13 @@ $(document).ready(function() {
         $("#attackButton").attr("disabled", false);
     }
 
+    function setEnemyHealth(b) {
+        let base = b / 2;
+        let mod = getDiceRoll(base);
+        let final = mod + b;
+        return final;
+    }
+
     function doesAttackHit(a, d) {
         let aSpeed = (getDiceRoll(a.speed) + a.speed)
         let dSpeed = (getDiceRoll(d.speed) + getDiceRoll(d.speed))
@@ -91,7 +98,7 @@ $(document).ready(function() {
 
             // Check for Crit
 
-            if (getDiceRoll(100) > 80) {
+            if (getDiceRoll(100) > 90) {
                 $("#playerCrit").show().text("Crit!").css("color", "red");
                 attackDmg = basicAttack(enemy.power) * 5;
             } else {
@@ -111,7 +118,7 @@ $(document).ready(function() {
     function enemyAttack() {
         $("#playerCrit").empty()
         if (doesAttackHit(enemy, player)) {
-            if (getDiceRoll(100) > 80) {
+            if (getDiceRoll(100) > 90) {
                 $("#enemyCrit").show().text("Crit!").css("color", "red");
                 eAttackDmg = basicAttack(enemy.power) * 5;
             } else {
@@ -168,9 +175,10 @@ $(document).ready(function() {
         }
     });
 
+
     $("#startEasy").click(function() {
         enemy.name = "Easy";
-        enemy.maxHp = 100;
+        enemy.maxHp = setEnemyHealth(100);
         enemy.currentHp = enemy.maxHp;
         enemy.speed = 15;
         startCombat();
@@ -178,7 +186,7 @@ $(document).ready(function() {
 
     $("#startMedium").click(function() {
         enemy.name = "Medium";
-        enemy.maxHp = 125;
+        enemy.maxHp = setEnemyHealth(125);
         enemy.currentHp = enemy.maxHp;
         enemy.speed = 20;
         startCombat();
@@ -186,7 +194,7 @@ $(document).ready(function() {
 
     $("#startHard").click(function() {
         enemy.name = "Hard";
-        enemy.maxHp = 150;
+        enemy.maxHp = setEnemyHealth(150);
         enemy.currentHp = enemy.maxHp;
         enemy.speed = 25;
         startCombat();
