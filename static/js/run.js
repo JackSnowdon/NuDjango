@@ -170,24 +170,24 @@ $(document).ready(function() {
 
     $("#startEasy").click(function() {
         enemy.name = "Easy";
-        enemy.currentHp = 100;
         enemy.maxHp = 100;
+        enemy.currentHp = enemy.maxHp;
         enemy.speed = 15;
         startCombat();
     })
 
     $("#startMedium").click(function() {
         enemy.name = "Medium";
-        enemy.currentHp = 125;
         enemy.maxHp = 125;
+        enemy.currentHp = enemy.maxHp;
         enemy.speed = 20;
         startCombat();
     })
 
     $("#startHard").click(function() {
         enemy.name = "Hard";
-        enemy.currentHp = 150;
         enemy.maxHp = 150;
+        enemy.currentHp = enemy.maxHp;
         enemy.speed = 25;
         startCombat();
     })
