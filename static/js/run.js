@@ -9,8 +9,10 @@ $(document).ready(function() {
     var player = new Object();
     player.maxHp = 100;
     player.currentHp = 100;
-    player.power = 10;
+    player.power = 12;
     player.speed = 20;
+    player.gold = 0;
+    player.xp = 0;
 
     // Enemy Object
 
@@ -27,13 +29,16 @@ $(document).ready(function() {
         player.currentHp = x;
         player.maxHp = x;
         $("#playerHealth").text(player.currentHp);
-        $("#playerMaxHp").text(player.maxHp)
+        $("#playerMaxHp").text(player.maxHp);
+        $("#playerGold").text(player.gold);
+        $("#playerXp").text(player.xp)
     }
 
     function emptyResults() {
         $("#winnerResult").empty();
         $("#playerHitResult").empty();
         $("#enemyHitResult").empty();
+        $("#goldResult").empty();
     }
 
     // Combat Functions
@@ -42,6 +47,10 @@ $(document).ready(function() {
 
     function getDiceRoll(x) {
         return Math.floor(Math.random() * x) + 1;
+    }
+
+    function getRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
     function attack(base, power) {
@@ -78,7 +87,6 @@ $(document).ready(function() {
     function doesAttackHit(a, d) {
         let aSpeed = (getDiceRoll(a.speed) + a.speed)
         let dSpeed = (getDiceRoll(d.speed) + getDiceRoll(d.speed))
-        console.log(aSpeed, dSpeed)
         if (aSpeed >= dSpeed) {
             return true;
         } else {
@@ -108,7 +116,7 @@ $(document).ready(function() {
             // Reduces enemy health and displays results
 
             enemy.currentHp -= attackDmg;
-            $("#playerHitResult").html(player.name + " Hit The Enemy for " + attackDmg + " Hit Points!");
+            $("#playerHitResult").html(player.name + " Hits " + enemy.name + " for " + attackDmg + " Hit Points!");
             $("#enemyHealth").html(enemy.currentHp);
         } else {
             $("#playerHitResult").html(player.name + " Misses " + enemy.name);
@@ -125,7 +133,7 @@ $(document).ready(function() {
                 eAttackDmg = basicAttack(enemy.power);
             }
             player.currentHp -= eAttackDmg;
-            $("#enemyHitResult").html(enemy.name + " Hit " + player.name + " for " + eAttackDmg + " Hit Points!");
+            $("#enemyHitResult").html(enemy.name + " Hits " + player.name + " for " + eAttackDmg + " Hit Points!");
             $("#playerHealth").text(player.currentHp);
         } else {
             $("#enemyHitResult").html(enemy.name + " Misses " + player.name);
@@ -146,6 +154,7 @@ $(document).ready(function() {
         $("#hitresults").fadeOut("slow");
         $("#enemyHealth").html(enemy.maxHp);
         $("#playerHealth").html(player.currentHp);
+        $("#playerGold").html(player.gold);
         $(".combat").fadeOut("slow");
         $("#enemyCrit").empty()
         $("#playerCrit").empty()
@@ -175,7 +184,6 @@ $(document).ready(function() {
         }
     });
 
-
     $("#startEasy").click(function() {
         enemy.name = "Easy";
         enemy.maxHp = setEnemyHealth(100);
@@ -186,7 +194,7 @@ $(document).ready(function() {
 
     $("#startMedium").click(function() {
         enemy.name = "Medium";
-        enemy.maxHp = setEnemyHealth(125);
+        enemy.maxHp = setEnemyHealth(150);
         enemy.currentHp = enemy.maxHp;
         enemy.speed = 20;
         startCombat();
@@ -194,11 +202,17 @@ $(document).ready(function() {
 
     $("#startHard").click(function() {
         enemy.name = "Hard";
-        enemy.maxHp = setEnemyHealth(150);
+        enemy.maxHp = setEnemyHealth(200);
         enemy.currentHp = enemy.maxHp;
         enemy.speed = 25;
         startCombat();
     })
+
+    function earnGold(g) {
+        let gBase = getRange(getDiceRoll(g), getDiceRoll(g));
+        player.gold += gBase;
+        $("#goldResult").html("Earnt " + gBase + " Gold!");
+    }
 
     // Player Attack
 
@@ -207,6 +221,7 @@ $(document).ready(function() {
         // Checks if enemy HP is below 0 and ends combat
         if (areYouDead(enemy.currentHp)) {
             $("#enemyHealth").html(0);
+            earnGold(enemy.maxHp);
             $("#winnerResult").html(player.name + " Wins!");
             setTimeout(function() {
                 resetStats();
