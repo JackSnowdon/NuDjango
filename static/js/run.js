@@ -39,6 +39,7 @@ $(document).ready(function() {
         $("#playerHitResult").empty();
         $("#enemyHitResult").empty();
         $("#goldResult").empty();
+        $("#xpResult").empty();
     }
 
     // Combat Functions
@@ -155,6 +156,7 @@ $(document).ready(function() {
         $("#enemyHealth").html(enemy.maxHp);
         $("#playerHealth").html(player.currentHp);
         $("#playerGold").html(player.gold);
+        $("#playerXp").html(player.xp);
         $(".combat").fadeOut("slow");
         $("#enemyCrit").empty()
         $("#playerCrit").empty()
@@ -209,9 +211,16 @@ $(document).ready(function() {
     })
 
     function earnGold(g) {
-        let gBase = getRange(getDiceRoll(g), getDiceRoll(g));
+        g += g / 10;
+        let gBase = getRange(getDiceRoll(g + 10), g + 25);
         player.gold += gBase;
         $("#goldResult").html("Earnt " + gBase + " Gold!");
+    }
+
+    function earnXp(x) {
+        let xBase = getRange(getDiceRoll(x + 15), x + 30);
+        player.xp += xBase;
+        $("#xpResult").html("Earnt " + xBase + " XP!");
     }
 
     // Player Attack
@@ -222,6 +231,7 @@ $(document).ready(function() {
         if (areYouDead(enemy.currentHp)) {
             $("#enemyHealth").html(0);
             earnGold(enemy.maxHp);
+            earnXp(enemy.maxHp);
             $("#winnerResult").html(player.name + " Wins!");
             setTimeout(function() {
                 resetStats();
@@ -236,6 +246,8 @@ $(document).ready(function() {
             if (areYouDead(player.currentHp)) {
                 $("#attackButton").attr("disabled", true);
                 $("#playerHealth").html(0);
+                earnGold(enemy.maxHp / 2);
+                earnXp(enemy.maxHp / 2);
                 $("#winnerResult").html(enemy.name + " Wins!");
                 setTimeout(function() {
                     resetStats()
