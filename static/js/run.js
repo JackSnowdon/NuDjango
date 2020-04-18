@@ -12,7 +12,8 @@ $(document).ready(function() {
     player.power = 12;
     player.speed = 20;
     player.gold = 500;
-    player.xp = 0;
+    player.xp = 5000;
+    player.level = 1;
 
     // Enemy Object
 
@@ -34,6 +35,7 @@ $(document).ready(function() {
         $("#playerXp").text(player.xp);
         $("#playerPower").text(player.power);
         $("#playerSpeed").text(player.speed);
+        $("#playerLevel").text(player.level);
     }
 
     function emptyResults() {
@@ -271,10 +273,8 @@ $(document).ready(function() {
     $("#enterShop").click(function() {
         emptyResults()
         $(".buttons").fadeOut("slow");
-        let powerAmount = setUpgradeAmount(player.power);
-        $("#powerUpgrade").text(powerAmount);
-        let speedAmount = setUpgradeAmount(player.speed);
-        $("#speedUpgrade").text(speedAmount);
+        setUpgradeAmount(player.power, "#powerUpgrade");
+        setUpgradeAmount(player.speed, "#speedUpgrade");
         setTimeout(function() {
             $(".shop").fadeIn("slow");
         }, 1000);
@@ -287,9 +287,8 @@ $(document).ready(function() {
             player.power += 2;
             $("#playerGold").text(player.gold);
             $("#playerPower").text(player.power);
-            let newPowerAmount = setUpgradeAmount(player.power);
-            $("#powerUpgrade").text(newPowerAmount);
-            alert("Power upgrade brought for " + powerAmount + " Gold!");
+            setUpgradeAmount(player.power, "#powerUpgrade");
+            alert("Power upgrade purchased!");
         } else {
             alert("You dont have enough gold! You need " + powerAmount + " Gold!");
         }
@@ -302,17 +301,16 @@ $(document).ready(function() {
             player.speed += 1;
             $("#playerGold").text(player.gold);
             $("#playerSpeed").text(player.speed);
-            let newSpeedAmount = setUpgradeAmount(player.speed);
-            $("#speedUpgrade").text(newSpeedAmount);
-            alert("Speed upgrade brought for " + speedAmount + " Gold!");
+            setUpgradeAmount(player.speed, "#speedUpgrade");
+            alert("Speed upgrade purchased!");
         } else {
             alert("You dont have enough gold! You need " + speedAmount + " Gold!");
         }
     })
 
-    function setUpgradeAmount(a) {
+    function setUpgradeAmount(a, t) {
         let base = Math.floor(a * 12);
-        return base;
+        $(t).text(base);
     }
 
     $("#leaveShop").click(function() {
@@ -327,10 +325,34 @@ $(document).ready(function() {
     $("#enterTraining").click(function() {
         emptyResults()
         $(".buttons").fadeOut("slow");
+        setLevelUpAmount(player.level, "#levelUpgrade");
         setTimeout(function() {
             $(".training").fadeIn("slow");
         }, 1000);
     })
+
+    $("#buyLevel").click(function() {
+        let levelAmount = $("#levelUpgrade").text();
+        if (player.xp >= levelAmount) {
+            player.xp -= levelAmount;
+            player.level += 1;
+            player.maxHp += 10;
+            player.currentHp = player.maxHp;
+            $("#playerHealth").text(player.currentHp);
+            $("#playerMaxHp").text(player.maxHp);
+            $("#playerXp").text(player.xp);
+            $("#playerLevel").text(player.level);
+            setLevelUpAmount(player.level, "#levelUpgrade");
+            alert("Leveled Up!");
+        } else {
+            alert("You dont have enough XP! You need " + levelAmount + "xp to Level Up!");
+        }
+    })
+
+    function setLevelUpAmount(l, t) {
+        let base = Math.floor(1.1 * (l * 1000));
+        $(t).text(base);
+    }
 
     $("#leaveTraining").click(function() {
         $(".training").fadeOut("slow");
@@ -338,8 +360,6 @@ $(document).ready(function() {
             $(".buttons").fadeIn("slow");
         }, 1000);
     })
-
-
 
     // Save System
 
