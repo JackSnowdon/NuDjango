@@ -150,7 +150,7 @@ $(document).ready(function() {
 
     // Restart 
 
-    function resetStats() {
+    function resetCombat() {
         player.currentHp = player.maxHp;
         $("#hitresults").fadeOut("slow");
         $("#enemyHealth").html(enemy.maxHp);
@@ -234,7 +234,7 @@ $(document).ready(function() {
             earnXp(enemy.maxHp);
             $("#winnerResult").html(player.name + " Wins!");
             setTimeout(function() {
-                resetStats();
+                resetCombat();
             }, 1500);
             return;
         }
@@ -250,17 +250,55 @@ $(document).ready(function() {
                 earnXp(enemy.maxHp / 2);
                 $("#winnerResult").html(enemy.name + " Wins!");
                 setTimeout(function() {
-                    resetStats()
+                    resetCombat()
                 }, 1500)
                 return;
             }
         }, 1000);
     })
 
+    // Die
+
     $("#rollD6").click(function() {
         var result = getDiceRoll(6);
         $("#d6").text(result);
     });
+
+    // Shop
+
+    $("#enterShop").click(function() {
+        emptyResults()
+        $(".buttons").fadeOut("slow");
+        setTimeout(function() {
+            $(".shop").fadeIn("slow");
+        }, 1000);
+    })
+
+    $("#leaveShop").click(function() {
+        $(".shop").fadeOut("slow");
+        setTimeout(function() {
+            $(".buttons").fadeIn("slow");
+        }, 1000);
+    })
+
+    // Training
+
+    $("#enterTraining").click(function() {
+        emptyResults()
+        $(".buttons").fadeOut("slow");
+        setTimeout(function() {
+            $(".training").fadeIn("slow");
+        }, 1000);
+    })
+
+    $("#leaveTraining").click(function() {
+        $(".training").fadeOut("slow");
+        setTimeout(function() {
+            $(".buttons").fadeIn("slow");
+        }, 1000);
+    })
+
+
 
     // Save System
 

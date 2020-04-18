@@ -36,7 +36,9 @@
 
 .combat,
 .stat-nav,
-.buttons {
+.buttons,
+.shop,
+.training {
     display: none;
 }
 
