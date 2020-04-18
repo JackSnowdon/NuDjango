@@ -11,7 +11,7 @@ $(document).ready(function() {
     player.currentHp = 100;
     player.power = 12;
     player.speed = 20;
-    player.gold = 0;
+    player.gold = 500;
     player.xp = 0;
 
     // Enemy Object
@@ -31,7 +31,9 @@ $(document).ready(function() {
         $("#playerHealth").text(player.currentHp);
         $("#playerMaxHp").text(player.maxHp);
         $("#playerGold").text(player.gold);
-        $("#playerXp").text(player.xp)
+        $("#playerXp").text(player.xp);
+        $("#playerPower").text(player.power);
+        $("#playerSpeed").text(player.speed);
     }
 
     function emptyResults() {
@@ -269,10 +271,49 @@ $(document).ready(function() {
     $("#enterShop").click(function() {
         emptyResults()
         $(".buttons").fadeOut("slow");
+        let powerAmount = setUpgradeAmount(player.power);
+        $("#powerUpgrade").text(powerAmount);
+        let speedAmount = setUpgradeAmount(player.speed);
+        $("#speedUpgrade").text(speedAmount);
         setTimeout(function() {
             $(".shop").fadeIn("slow");
         }, 1000);
     })
+
+    $("#buyPower").click(function() {
+        let powerAmount = $("#powerUpgrade").text();
+        if (player.gold >= powerAmount) {
+            player.gold -= powerAmount;
+            player.power += 2;
+            $("#playerGold").text(player.gold);
+            $("#playerPower").text(player.power);
+            let newPowerAmount = setUpgradeAmount(player.power);
+            $("#powerUpgrade").text(newPowerAmount);
+            alert("Power upgrade brought for " + powerAmount + " Gold!");
+        } else {
+            alert("You dont have enough gold! You need " + powerAmount + " Gold!");
+        }
+    })
+
+    $("#buySpeed").click(function() {
+        let speedAmount = $("#speedUpgrade").text();
+        if (player.gold >= speedAmount) {
+            player.gold -= speedAmount;
+            player.speed += 1;
+            $("#playerGold").text(player.gold);
+            $("#playerSpeed").text(player.speed);
+            let newSpeedAmount = setUpgradeAmount(player.speed);
+            $("#speedUpgrade").text(newSpeedAmount);
+            alert("Speed upgrade brought for " + speedAmount + " Gold!");
+        } else {
+            alert("You dont have enough gold! You need " + speedAmount + " Gold!");
+        }
+    })
+
+    function setUpgradeAmount(a) {
+        let base = Math.floor(a * 12);
+        return base;
+    }
 
     $("#leaveShop").click(function() {
         $(".shop").fadeOut("slow");
