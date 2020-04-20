@@ -12,7 +12,7 @@ $(document).ready(function() {
     player.power = 12;
     player.speed = 20;
     player.gold = 500;
-    player.xp = 5000;
+    player.xp = 55000;
     player.level = 1;
 
     // Enemy Object

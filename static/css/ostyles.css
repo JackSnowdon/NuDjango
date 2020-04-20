@@ -1,0 +1,86 @@
+/* Background */
+
+.bg {
+    background-color: #ffffff;
+    font-family: 'Comic Neue', cursive;
+}
+
+.social-icons a {
+    display: inline-block;
+    height: 3.5rem;
+    width: 3.5rem;
+    background-color: #495057;
+    color: #fff !important;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 1.5rem;
+    line-height: 3.5rem;
+    margin-right: 1rem;
+    transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    -webkit-transition: all 0.35s ease-in-out;
+    -o-transition: all 0.35s ease-in-out;
+}
+
+.social-icons a:last-child {
+    margin-right: 0;
+}
+
+.social-icons a:hover {
+    background-color: rgb(66, 209, 130);
+}
+
+
+/* Navbar */
+
+.nav-bg {
+    background-color: #080807;
+}
+
+.nav-bg a {
+    color: #f4f4f4;
+    transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    -webkit-transition: all 0.35s ease-in-out;
+    -o-transition: all 0.35s ease-in-out;
+}
+
+.nav-bg a:hover {
+    color: #74a812
+}
+
+.nav-button {
+    color: #f4f4f4;
+}
+
+.navbar-toggler {
+    outline: none;
+}
+
+.logged-in {
+    color: #f4f4f4;
+    margin: 8px 2px;
+}
+
+.stat-nav {
+    padding: 16px 8px;
+}
+
+
+/* Conbat */
+
+.combat,
+.stat-nav,
+.buttons,
+.shop,
+.training {
+    display: none;
+}
+
+
+/* Forms */
+
+.name-form {
+    display: inline-block;
+    width: 100%;
+}
