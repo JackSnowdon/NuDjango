@@ -27,9 +27,27 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'index' %}">Home</a>
                 </li>
+                {% if request.user.profile.staff_access %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'oindex' %}">Core</a>
                 </li>
+                {% endif %} {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+                <!--- Below LI displays active user logged in -->
+                <li class="nav-item logged-in">Logged in as: <span class="capitalize">{{user}}</span></li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'registration' %}">Register</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </nav>
