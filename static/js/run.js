@@ -82,13 +82,6 @@ $(document).ready(function() {
         $("#attackButton").attr("disabled", false);
     }
 
-    function setEnemyHealth(b) {
-        let base = b / 2;
-        let mod = getDiceRoll(base);
-        let final = mod + b;
-        return final;
-    }
-
     function doesAttackHit(a, d) {
         let aSpeed = (getDiceRoll(a.speed) + a.speed)
         let dSpeed = (getDiceRoll(d.speed) + getDiceRoll(d.speed))
@@ -190,11 +183,19 @@ $(document).ready(function() {
         }
     });
 
+    function setEnemyHealth(b) {
+        let base = player.level * Math.floor(b / 10);
+        let mod = Math.floor(getDiceRoll(b) / 2);
+        let final = b + mod + base;
+        return final;
+    }
+
     $("#startEasy").click(function() {
         enemy.name = "Easy";
         enemy.maxHp = setEnemyHealth(100);
         enemy.currentHp = enemy.maxHp;
-        enemy.speed = 15;
+        enemy.speed = 15 + player.level;
+        enemy.power = 10;
         startCombat();
     })
 
@@ -202,7 +203,8 @@ $(document).ready(function() {
         enemy.name = "Medium";
         enemy.maxHp = setEnemyHealth(150);
         enemy.currentHp = enemy.maxHp;
-        enemy.speed = 20;
+        enemy.speed = Math.floor(20 + (player.level * 1.3));
+        enemy.power = 12;
         startCombat();
     })
 
@@ -210,9 +212,12 @@ $(document).ready(function() {
         enemy.name = "Hard";
         enemy.maxHp = setEnemyHealth(200);
         enemy.currentHp = enemy.maxHp;
-        enemy.speed = 25;
+        enemy.speed = Math.floor(25 + (player.level * 1.8));
+        enemy.power = 15;
         startCombat();
     })
+
+    // Combat Rewards
 
     function earnGold(g) {
         g += g / 10;
