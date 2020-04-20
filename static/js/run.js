@@ -29,5 +29,31 @@ $(document).ready(function() {
         console.log(player);
     };
 
+    function getDiceRoll(x) {
+        return Math.floor(Math.random() * x) + 1;
+    }
+
+    function takeHP() {
+        let dmg = getDiceRoll(10)
+        player.currentHp -= dmg;
+        if (areYouDead(player.currentHp)) {
+            player.currentHp = 0;
+            $("#hero-current-hp").text(player.currentHp);
+            $("#attackButton").attr("disabled", true);
+            $(".combat").fadeIn("slow");
+        }
+        $("#hero-current-hp").text(player.currentHp);
+    }
+
+    function areYouDead(hp) {
+        return hp <= 0;
+    }
+
+    $("#attackButton").click(function() {
+        takeHP();
+    })
+
     setPlayerStats();
+
+
 });

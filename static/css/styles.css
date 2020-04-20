@@ -93,6 +93,13 @@ tr {
 }
 
 
+/* Combat */
+
+.combat {
+    display: none;
+}
+
+
 /* Breaks */
 
 .break-index {
