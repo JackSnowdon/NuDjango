@@ -7,8 +7,8 @@ from accounts.models import Profile
 
 class Base(models.Model):
     name = models.CharField(max_length=255)
-    currentHp = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(50000)], default=100)
-    maxHp = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(50000)], default=100)
+    current_hp = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(50000)], default=100)
+    max_hp = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(50000)], default=100)
     power = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=1)
     speed = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=1)
     gold = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(250000)], default=1)

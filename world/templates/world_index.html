@@ -11,8 +11,18 @@
 <section class="hero">
     <div class="row">
         <div class="col-12">
-            <h2>Heroes: </h2>
             <a href="{% url 'add_new_hero' %}" role="button" class="btn btn-warning" aria-disabled="false">Add New Hero</a>
+            <h2>Heroes: </h2>
+        </div>
+        <div class="col-12">
+            <ul>
+                {% for h in heroes %}
+                <li>
+                    <a href="{% url 'single_hero' h.id %}" class="hero-list-name">{{ h.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+
         </div>
     </div>
 </section>
