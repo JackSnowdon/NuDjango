@@ -4,7 +4,7 @@
 <section class="header">
     <div class="row">
         <div class="col-12 mt-2">
-            <h1>NU Django</h1>
+            <h1>NU Game</h1>
         </div>
     </div>
 </section>
@@ -27,31 +27,37 @@
     </div>
 </section>
 
-<section id="stats">
+<section class="save">
+    <div class="row text-center">
+        <div class="col-6">
+            <button class="btn btn-success" id="saveButton">Save Game!</button>
+        </div>
+        <div class="col-6">
+            <button class="btn btn-success" id="deleteButton">Delete Game</button>
+        </div>
+    </div>
+</section>
+
+<section class="stats">
     <div class="stat-nav">
         <div class="row text-center">
-            <div class="col-12">
-                <h5 id="winnerResult"></h5>
-                <h5 id="goldResult"></h5>
-                <h5 id="xpResult"></h5>
+            <div class="col-4 col-md-2">
+                <p class="display-stat">Name: <span id="playerName"></span> - <span id="playerLevel"></span></p>
             </div>
-            <div class="col-2">
-                <h5>Name: <span id="playerName"></span> - <span id="playerLevel"></span></h5>
+            <div class="col-4 col-md-2">
+                <p class="display-stat">Health: <span id="playerHealth"></span>/<span id="playerMaxHp"></span></p>
             </div>
-            <div class="col-2">
-                <h5>Health: <span id="playerHealth"></span>/<span id="playerMaxHp"></span></h5>
+            <div class="col-4 col-md-2">
+                <p class="display-stat">Gold: <span id="playerGold"></span></p>
             </div>
-            <div class="col-2">
-                <h5>Gold: <span id="playerGold"></span></h5>
+            <div class="col-4 col-md-2">
+                <p class="display-stat">XP: <span id="playerXp"></span></p>
             </div>
-            <div class="col-2">
-                <h5>XP: <span id="playerXp"></span></h5>
+            <div class="col-4 col-md-2">
+                <p class="display-stat">Power: <span id="playerPower"></span></p>
             </div>
-            <div class="col-2">
-                <h5>Power: <span id="playerPower"></span></h5>
-            </div>
-            <div class="col-2">
-                <h5>Speed: <span id="playerSpeed"></span></h5>
+            <div class="col-4 col-md-2">
+                <p class="display-stat">Speed: <span id="playerSpeed"></span></p>
             </div>
         </div>
     </div>
@@ -62,14 +68,17 @@
         <div class="col-12 text-center">
             <p>Choose a Fight!</p>
         </div>
-        <div class="col-4 text-center">
+        <div class="col-3 text-center">
             <button class="btn btn-success" id="startEasy">Easy</button>
         </div>
-        <div class="col-4 text-center">
+        <div class="col-3 text-center">
             <button class="btn btn-success" id="startMedium">Medium</button>
         </div>
-        <div class="col-4 text-center">
+        <div class="col-3 text-center">
             <button class="btn btn-success" id="startHard">Hard</button>
+        </div>
+        <div class="col-3 text-center">
+            <button class="btn btn-danger" id="startBoss">Boss</button>
         </div>
     </div>
     <div class="row">
@@ -83,6 +92,14 @@
 </section>
 
 <section class="combat">
+    <div class="row text-center mb-3">
+        <div class="col-6">
+            <button class="btn btn-warning" id="attackButton">Attack</button>
+        </div>
+        <div class="col-6">
+            <button class="btn btn-success" id="healButton">Heal</button>
+        </div>
+    </div>
     <div class="row text-center">
         <div class="col-12">
             <h5>Enemy: <span id="enemyName"></span></h5>
@@ -101,25 +118,20 @@
             </h5>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12 text-center">
-            <button class="btn btn-success" id="attackButton">Attack</button>
-        </div>
-    </div>
 </section>
 
 <section class="shop">
     <div class="row">
-        <div class="col-12 text-center">
+        <div class="col-12">
             <h3>Shop!</h3>
         </div>
     </div>
-    <div class="row text-center">
-        <div class="col-6">
+    <div class="row text-center mb-5">
+        <div class="col-md-6 col-12">
             <h4>Upgrade Power Cost: <span id="powerUpgrade"></span></h4>
             <button class="btn btn-success" id="buyPower">Upgrade Power</button>
         </div>
-        <div class="col-6">
+        <div class="col-md-6 col-12">
             <h4>Upgrade Speed Cost: <span id="speedUpgrade"></span></h4>
             <button class="btn btn-success" id="buySpeed">Upgrade Speed</button>
         </div>
@@ -150,6 +162,24 @@
     </div>
 </section>
 
+<section class="load">
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-success" id="loadButton">Load Game!</button>
+        </div>
+    </div>
+</section>
+
+<section class="results mt-3">
+    <div class="row text-center">
+        <div class="col-12">
+            <h5 id="winnerResult"></h5>
+            <h5 id="goldResult"></h5>
+            <h5 id="xpResult"></h5>
+        </div>
+    </div>
+</section>
+
 <section class="die">
     <div class="row">
         <div class="col-md-4 col-12">
@@ -160,7 +190,6 @@
     </div>
 </section>
 
-</div>
 
 {% endblock %} {% block script_js %}
 <script type="text/javascript" src="{% static 'js/orun.js' %}"></script>

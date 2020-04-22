@@ -12,7 +12,7 @@ $(document).ready(function() {
     player.power = 12;
     player.speed = 20;
     player.gold = 500;
-    player.xp = 55000;
+    player.xp = 5000;
     player.level = 1;
 
     // Enemy Object
@@ -25,10 +25,8 @@ $(document).ready(function() {
 
     // Setup Functions
 
-    function setPlayerStats(x) {
+    function setPlayerStats() {
         $("#playerName").text(player.name);
-        player.currentHp = x;
-        player.maxHp = x;
         $("#playerHealth").text(player.currentHp);
         $("#playerMaxHp").text(player.maxHp);
         $("#playerGold").text(player.gold);
@@ -76,10 +74,12 @@ $(document).ready(function() {
         $("#enemyName").text(enemy.name);
         $("#enemyHealth").text(enemy.currentHp);
         $("#enemyMaxHp").text(enemy.maxHp);
+        $(".save").fadeOut("slow");
         setTimeout(function() {
             $(".combat").fadeIn("slow");
         }, 1000);
         $("#attackButton").attr("disabled", false);
+        $("#healButton").attr("disabled", false);
     }
 
     function doesAttackHit(a, d) {
@@ -159,6 +159,7 @@ $(document).ready(function() {
         $("#playerCrit").empty()
         setTimeout(function() {
             $(".buttons").fadeIn("slow");
+            $(".save").fadeIn("slow");
         }, 1500)
     }
 
@@ -168,6 +169,7 @@ $(document).ready(function() {
         // Checks name has value (Trimmed in case of whitespace)
         var playerName = $("#player-name").val();
         $(".name").fadeOut("slow");
+        $(".load").fadeOut("slow");
         if ($.trim(playerName) == '') {
             alert('You surely must have a name!');
             $(".name").fadeIn("slow");
@@ -175,8 +177,9 @@ $(document).ready(function() {
             player.name = playerName;
         }
         if (typeof player.name !== "undefined") {
-            setPlayerStats(100);
+            setPlayerStats();
             setTimeout(function() {
+                $(".save").fadeIn("slow");
                 $(".buttons").fadeIn("slow");
                 $(".stat-nav").fadeIn("slow");
             }, 1000);
@@ -190,47 +193,34 @@ $(document).ready(function() {
         return final;
     }
 
-    $("#startEasy").click(function() {
-        enemy.name = "Easy";
-        enemy.maxHp = setEnemyHealth(100);
+    function setEnemyStats(name, maxhp, speed, power, reward) {
+        enemy.name = name;
+        enemy.maxHp = setEnemyHealth(maxhp);
         enemy.currentHp = enemy.maxHp;
-        enemy.speed = 15 + player.level;
-        enemy.power = 10;
+        enemy.speed = speed;
+        enemy.power = power;
+        enemy.reward = reward;
+    }
+
+    $("#startEasy").click(function() {
+        setEnemyStats("Easy", 100, 15 + player.level, 10, 1)
         startCombat();
     })
 
     $("#startMedium").click(function() {
-        enemy.name = "Medium";
-        enemy.maxHp = setEnemyHealth(150);
-        enemy.currentHp = enemy.maxHp;
-        enemy.speed = Math.floor(20 + (player.level * 1.3));
-        enemy.power = 12;
+        setEnemyStats("Medium", 125, 17 + player.level, 20, 2)
         startCombat();
     })
 
     $("#startHard").click(function() {
-        enemy.name = "Hard";
-        enemy.maxHp = setEnemyHealth(200);
-        enemy.currentHp = enemy.maxHp;
-        enemy.speed = Math.floor(25 + (player.level * 1.8));
-        enemy.power = 15;
+        setEnemyStats("Hard", 150, 20 + player.level, 30, 3)
         startCombat();
     })
 
-    // Combat Rewards
-
-    function earnGold(g) {
-        g += g / 10;
-        let gBase = getRange(getDiceRoll(g + 10), g + 25);
-        player.gold += gBase;
-        $("#goldResult").html("Earnt " + gBase + " Gold!");
-    }
-
-    function earnXp(x) {
-        let xBase = getRange(getDiceRoll(x + 15), x + 30);
-        player.xp += xBase;
-        $("#xpResult").html("Earnt " + xBase + " XP!");
-    }
+    $("#startBoss").click(function() {
+        setEnemyStats("Omza", 25000, 100 + player.level, 100, 5)
+        startCombat();
+    })
 
     // Player Attack
 
@@ -238,13 +228,7 @@ $(document).ready(function() {
         playerAttack();
         // Checks if enemy HP is below 0 and ends combat
         if (areYouDead(enemy.currentHp)) {
-            $("#enemyHealth").html(0);
-            earnGold(enemy.maxHp);
-            earnXp(enemy.maxHp);
-            $("#winnerResult").html(player.name + " Wins!");
-            setTimeout(function() {
-                resetCombat();
-            }, 1500);
+            printResults("#enemyHealth", enemy.reward, player)
             return;
         }
 
@@ -254,17 +238,55 @@ $(document).ready(function() {
             enemyAttack();
             if (areYouDead(player.currentHp)) {
                 $("#attackButton").attr("disabled", true);
-                $("#playerHealth").html(0);
-                earnGold(enemy.maxHp / 2);
-                earnXp(enemy.maxHp / 2);
-                $("#winnerResult").html(enemy.name + " Wins!");
-                setTimeout(function() {
-                    resetCombat()
-                }, 1500)
+                printResults("#playerHealth", enemy.reward / 2, enemy)
                 return;
             }
         }, 1000);
     })
+
+    $("#healButton").click(function() {
+        $("#healButton").attr("disabled", true);
+        let healDmg = standardHeal(player);
+        player.currentHp += healDmg;
+        if (player.currentHp >= player.maxHp) {
+            player.currentHp = player.maxHp;
+        }
+        $("#playerHealth").html(player.currentHp);
+        $("#playerHitResult").html(player.name + " Heals self for " + healDmg + " Hit Points!");
+    })
+
+    function standardHeal(user) {
+        let base = user.maxHp / 3;
+        let final = Math.floor(getDiceRoll(base) + base);
+        return final;
+    }
+
+    // Combat Rewards
+
+    function printResults(x, y, z) {
+        $(x).html(0);
+        earnGold(y);
+        earnXp(y);
+        $("#winnerResult").html(z.name + " Wins!");
+        setTimeout(function() {
+            resetCombat()
+        }, 1500)
+    }
+
+    function earnGold(g) {
+        let base = g * 100
+        let gBase = getRange(getDiceRoll(base + 10), base + 25);
+        player.gold += gBase;
+        $("#goldResult").html("Earnt " + gBase + " Gold!");
+    }
+
+    function earnXp(x) {
+        let base = x * 100;
+        let mod = getDiceRoll(base)
+        let xBase = getRange(getDiceRoll(base + 15), base + 30) + mod;
+        player.xp += xBase;
+        $("#xpResult").html("Earnt " + xBase + " XP!");
+    }
 
     // Die
 
@@ -314,8 +336,10 @@ $(document).ready(function() {
     })
 
     function setUpgradeAmount(a, t) {
-        let base = Math.floor(a * 12);
-        $(t).text(base);
+        let base = a * 10;
+        let mod = Math.floor(base / 3);
+        let final = mod + base;
+        $(t).text(final);
     }
 
     $("#leaveShop").click(function() {
@@ -368,19 +392,30 @@ $(document).ready(function() {
 
     // Save System
 
-    $("#save-button").click(function() {
+    $("#saveButton").click(function() {
 
         // Confirms if player wants to save progress
 
         var saveCheck = confirm("Saving will overwrite " + player.name + "'s save, press OK to confirm");
         if (saveCheck == true) {
             save();
+            alert("Game Saved!");
         } else {
             alert("Game not saved");
         }
     });
 
-    $("#load-button").click(function() {
+    function checkSave() {
+        let loadTester = JSON.parse(localStorage.getItem("save"));
+        console.log(loadTester);
+        if (loadTester === null) {
+            $(".load").css("display", "none");
+        }
+    }
+
+    checkSave();
+
+    $("#loadButton").click(function() {
 
         // Confirms player wants to load local save
 
@@ -389,10 +424,39 @@ $(document).ready(function() {
             load();
 
             // Loads from local storage and sets player stats
+
+            setPlayerStats();
+            $(".name").fadeOut("slow");
+            $(".load").fadeOut("slow");
+            setTimeout(function() {
+                $(".buttons").fadeIn("slow");
+                $(".stat-nav").fadeIn("slow");
+                $(".save").fadeIn("slow");
+            }, 1000);
+            alert("Game loaded");
+
         } else {
             alert("Game not loaded");
         }
     });
+
+    $("#deleteButton").click(function() {
+        var deleteCheck = confirm("Delete your save file?");
+        if (deleteCheck == true) {
+            clearSave();
+            $(".buttons").fadeOut("slow");
+            $(".stat-nav").fadeOut("slow");
+            $(".save").fadeOut("slow");
+            setTimeout(function() {
+                $(".name").fadeIn("slow");
+            }, 1000)
+            alert("Game deleted");
+        } else {
+            alert("Game not deleted");
+
+        }
+
+    })
 
     function save() {
 
@@ -400,8 +464,13 @@ $(document).ready(function() {
 
         var save = {
             playerPower: player.power,
-            playerHp: player.maxHp,
-
+            playerMaxHp: player.maxHp,
+            playerCurrentHp: player.currentHp,
+            playerSpeed: player.speed,
+            playerGold: player.gold,
+            playerXp: player.xp,
+            playerLevel: player.level,
+            playerName: player.name
         };
         localStorage.setItem("save", JSON.stringify(save));
     }
@@ -413,8 +482,19 @@ $(document).ready(function() {
         var saveGame = JSON.parse(localStorage.getItem("save"));
         if (saveGame != null && saveGame != undefined) {
             player.power = saveGame.playerPower;
-            player.maxHp = saveGame.playerHp;
+            player.maxHp = saveGame.playerMaxHp;
+            player.currentHp = saveGame.playerCurrentHp;
+            player.speed = saveGame.playerSpeed;
+            player.gold = saveGame.playerGold;
+            player.xp = saveGame.playerXp;
+            player.level = saveGame.playerLevel;
+            player.name = saveGame.playerName;
+
         }
+    }
+
+    function clearSave() {
+        localStorage.clear()
     }
 
 
