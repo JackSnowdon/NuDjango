@@ -1,9 +1,19 @@
 {% extends 'base.html' %} {% load static %} {% block page_title %} | {{ hero }} {% endblock %} {% block content %}
 
+<section class="button-nav">
+    <row class="mb-5">
+        <div class="col-12">
+            <a href="{% url 'world_index' %}" role="button" class="btn btn-warning" aria-disabled="false">Back to World Index</a>
+        </div>
+    </row>
+</section>
+
+
 <section class="header">
     <div class="row mb-5">
         <div class="col-12 text-center">
             <h1 class="weighted-lead">{{ hero }}</h1>
+            <p>{{ hero.alignment }}</p>
         </div>
     </div>
 </section>

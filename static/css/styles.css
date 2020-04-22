@@ -92,6 +92,28 @@ tr {
     width: 18rem;
 }
 
+.hero-list {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.hero-list-item {
+    font-size: 20px;
+}
+
+.hero-list-item a {
+    transition: all 0.25s ease-in-out;
+    -moz-transition: all 0.25s ease-in-out;
+    -webkit-transition: all 0.25s ease-in-out;
+    -o-transition: all 0.25s ease-in-out;
+    text-decoration: none;
+    color: black;
+}
+
+.hero-list-item a:hover {
+    color: #cf7815;
+}
+
 
 /* Combat */
 

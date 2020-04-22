@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block page_title %} | World {% endblock %} {% block content %}
 
+
 <section class="header">
     <div class="row mb-5">
         <div class="col-12 text-center">
@@ -15,10 +16,10 @@
             <h2>Heroes: </h2>
         </div>
         <div class="col-12">
-            <ul>
+            <ul class="hero-list">
                 {% for h in heroes %}
-                <li>
-                    <a href="{% url 'single_hero' h.id %}" class="hero-list-name">{{ h.name }}</a>
+                <li class="hero-list-item">
+                    <a href="{% url 'single_hero' h.id %}" class="hero-list-name"> - {{ h.name }}</a>
                 </li>
                 {% endfor %}
             </ul>
