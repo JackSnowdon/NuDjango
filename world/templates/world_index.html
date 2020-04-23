@@ -11,11 +11,9 @@
 
 <section class="hero">
     <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <a href="{% url 'add_new_hero' %}" role="button" class="btn btn-warning mb-3" aria-disabled="false">Add New Hero</a>
             <h2>Heroes: </h2>
-        </div>
-        <div class="col-12">
             <ul class="hero-list">
                 {% for h in heroes %}
                 <li class="hero-list-item">
@@ -23,6 +21,13 @@
                 </li>
                 {% endfor %}
             </ul>
+        </div>
+        <div class="col-6">{% if request.user.profile.staff_access %}
+            <a href="{% url 'add_new_enemy' %}" role="button" class="btn btn-warning mb-3" aria-disabled="false">Add New Enemy</a>
+            <h2>Enemies: </h2>
+
+
+            {% endif %}
 
         </div>
     </div>

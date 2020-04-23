@@ -34,7 +34,7 @@ $(document).ready(function() {
     }
 
     function takeHP() {
-        let dmg = getDiceRoll(10)
+        let dmg = getDiceRoll(player.power)
         player.currentHp -= dmg;
         if (areYouDead(player.currentHp)) {
             player.currentHp = 0;

@@ -9,8 +9,7 @@ from .forms import *
 @login_required
 def world_index(request):
     profile = request.user.profile
-    heroes = profile.heroes.all()
-    print(heroes)
+    heroes = profile.heroes.filter(alignment="Player")
     return render(request, "world_index.html", {"heroes": heroes})
 
 @login_required
@@ -32,3 +31,23 @@ def add_new_hero(request):
 def single_hero(request, pk):
     hero = get_object_or_404(Base, pk=pk)
     return render(request, "single_hero.html", {"hero": hero})
+
+
+@login_required
+def add_new_enemy(request):
+    if request.method == "POST":
+        enemy_form = CreateEnemyForm(request.POST)
+        if enemy_form.is_valid():
+            form = enemy_form.save(commit=False)
+            form.alignment = "Enemy"
+            form.current_hp = form.max_hp
+            user = request.user
+            form.created_by = user.profile
+            form.save()
+            messages.error(request, 'Added {0}'.format(form.name), extra_tags='alert')
+            return redirect("world_index")
+        else:
+            print("failed")
+    else:
+        enemy_form = CreateEnemyForm()
+    return render(request, "add_new_enemy.html", {"enemy_form": enemy_form})

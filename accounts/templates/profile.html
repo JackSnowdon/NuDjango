@@ -7,6 +7,19 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-12">
+        <h3>Heroes:</h3>
+        <ul class="hero-list">
+            {% for h in heroes %}
+            <li class="hero-list-item">
+                <a href="{% url 'single_hero' h.id %}" class="hero-list-name"> - {{ h.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
 {% if user.profile.staff_access %}
 <div class="row">
     <div class="col-12 text-center mb-3">
