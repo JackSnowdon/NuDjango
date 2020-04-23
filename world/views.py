@@ -32,22 +32,38 @@ def single_hero(request, pk):
     hero = get_object_or_404(Base, pk=pk)
     return render(request, "single_hero.html", {"hero": hero})
 
+@login_required
+def world_panel(request):
+    if request.user.profile.staff_access:
+        enemies = Base.objects.filter(alignment="Enemy")
+        heroes = Base.objects.filter(alignment="Player")
+        return render(request, "world_panel.html", {"enemies": enemies, "heroes": heroes})
+    else:
+        messages.error(
+            request, "You Don't Have The Required Permissions", extra_tags="alert"
+        )
+        return redirect("world_index")
 
 @login_required
 def add_new_enemy(request):
-    if request.method == "POST":
-        enemy_form = CreateEnemyForm(request.POST)
-        if enemy_form.is_valid():
-            form = enemy_form.save(commit=False)
-            form.alignment = "Enemy"
-            form.current_hp = form.max_hp
-            user = request.user
-            form.created_by = user.profile
-            form.save()
-            messages.error(request, 'Added {0}'.format(form.name), extra_tags='alert')
-            return redirect("world_index")
+    if request.user.profile.staff_access:
+        if request.method == "POST":
+            enemy_form = CreateEnemyForm(request.POST)
+            if enemy_form.is_valid():
+                form = enemy_form.save(commit=False)
+                form.alignment = "Enemy"
+                form.current_hp = form.max_hp
+                user = request.user
+                form.created_by = user.profile
+                form.save()
+                messages.error(request, 'Added {0}'.format(form.name), extra_tags='alert')
+                return redirect("world_panel)
         else:
-            print("failed")
+            enemy_form = CreateEnemyForm()
+        return render(request, "add_new_enemy.html", {"enemy_form": enemy_form})
     else:
-        enemy_form = CreateEnemyForm()
-    return render(request, "add_new_enemy.html", {"enemy_form": enemy_form})
+        messages.error(
+            request, "You Don't Have The Required Permissions", extra_tags="alert"
+        )
+        return redirect("world_index")
+

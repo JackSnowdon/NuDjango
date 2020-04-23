@@ -75,7 +75,7 @@ def registration(request):
         request, "registration.html", {"registration_form": registration_form}
     )
 
-
+@login_required
 def user_profile(request):
     """ Display user profile """
     user = User.objects.get(email=request.user.email)
@@ -85,7 +85,7 @@ def user_profile(request):
         request, "profile.html", {"user": user, "profile": profile, "heroes": heroes}
     )
 
-
+@login_required
 def admin_panel(request):
     if request.user.profile.staff_access:
         profiles = Profile.objects.order_by("user")
@@ -96,7 +96,7 @@ def admin_panel(request):
         )
         return redirect("blog_home")
 
-
+@login_required
 def change_staff_access(request, pk):
     if request.user.profile.staff_access:
         profile = get_object_or_404(Profile, pk=pk)

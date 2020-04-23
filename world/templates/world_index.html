@@ -23,11 +23,7 @@
             </ul>
         </div>
         <div class="col-6">{% if request.user.profile.staff_access %}
-            <a href="{% url 'add_new_enemy' %}" role="button" class="btn btn-warning mb-3" aria-disabled="false">Add New Enemy</a>
-            <h2>Enemies: </h2>
-
-
-            {% endif %}
+            <a href="{% url 'world_panel' %}" role="button" class="btn btn-warning mb-3" aria-disabled="false">World Panel</a> {% endif %}
 
         </div>
     </div>

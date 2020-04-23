@@ -1,17 +1,18 @@
 {% extends 'base.html' %} {% load static %} {% load crispy_forms_tags %} {% block page_title %} | Add Hero {% endblock %} {% block content %}
 
+<section class="button-nav">
+    <div class="row mb-5">
+        <div class="col-12">
+            <a href="{% url 'world_index' %}" role="button" class="btn btn-warning" aria-disabled="false">Back to World Index</a>
+        </div>
+    </div>
+</section>
+
 <div class="row">
     <div class="col-12 text-center">
         <h1>New Hero</h1>
     </div>
 </div>
-
-<div class="row">
-    <div class="col-12 mb-3">
-        <a href="{% url 'world_index' %}" role="button" class="btn btn-warning" aria-disabled="false">Back</a>
-    </div>
-</div>
-
 
 <form role="form" method="post" id="new_base" action="{% url 'add_new_hero' %}">
     <div class="form-group body-text">
