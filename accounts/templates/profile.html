@@ -7,17 +7,27 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-12">
+<div class="row mb-5">
+    <div class="col-6">
         <h3>Heroes:</h3>
         <ul class="hero-list">
-            {% for h in heroes %}
+            {% for h in heroes %} {% if h.alignment == "Player" %}
             <li class="hero-list-item">
-                <a href="{% url 'single_hero' h.id %}" class="hero-list-name"> - {{ h.name }}</a>
-            </li>
-            {% endfor %}
+                <a href="{% url 'single_hero' h.id %}" class="hero-list-name"> - {{ h.name }}</a> {% endif %}
+            </li> {% endfor %}
         </ul>
     </div>
+    {% if user.profile.staff_access %}
+    <div class="col-6">
+        <h3>Enemies:</h3>
+        <ul class="hero-list">
+            {% for h in heroes %} {% if h.alignment == "Enemy" %}
+            <li class="hero-list-item enemy-item">
+                <a href="{% url 'single_hero' h.id %}" class="hero-list-name"> - {{ h.name }}</a> {% endif %}
+            </li> {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
 </div>
 
 {% if user.profile.staff_access %}

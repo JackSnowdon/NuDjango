@@ -57,7 +57,7 @@ def add_new_enemy(request):
                 form.created_by = user.profile
                 form.save()
                 messages.error(request, 'Added {0}'.format(form.name), extra_tags='alert')
-                return redirect("world_panel)
+                return redirect("world_panel")
         else:
             enemy_form = CreateEnemyForm()
         return render(request, "add_new_enemy.html", {"enemy_form": enemy_form})

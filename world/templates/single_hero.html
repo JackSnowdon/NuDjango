@@ -28,9 +28,12 @@
         <div class="col-md-4 col-12">
             <div class="card text-center">
                 <div class="card-body">
-                    <h5 class="card-title"><span id="hero-name">{{ hero }}</span> - <span class="small" id="hero-level">{{ hero.level }}</span></h5>
+                    <h5 class="card-title"><span id="hero-name">{{ hero }}</span></h5>
                     <h6 class="card-subtitle mb-2 text-muted"><span id="hero-current-hp">{{ hero.current_hp }}</span>/<span id="hero-max-hp">{{ hero.max_hp }}</span></h6>
                     <div class="row">
+                        <div class="col-12">
+                            <p>Level <span id="hero-level">{{ hero.level }}</span></p>
+                        </div>
                         <div class="col-6">
                             <h5>Gold: <span id="hero-gold">{{ hero.gold }}</span></h5>
                         </div>
@@ -49,7 +52,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8 col-12">
+        <div class="col-md-8 col-12 text-center">
             <button class="btn btn-success" id="attackButton">Attack Button</button>
         </div>
     </div>

@@ -19,7 +19,7 @@
 <section class="players">
     <div class="row">
         <div class="col-6">
-            <a href="{% url 'add_new_hero' %}" role="button" class="btn btn-warning mb-3" aria-disabled="false">Add New Hero</a>
+            <a href="{% url 'add_new_hero' %}" role="button" class="btn btn-success mb-3" aria-disabled="false">Add New Hero</a>
             <h2>Heroes: </h2>
             <ul class="hero-list">
                 {% for h in heroes %}
@@ -30,18 +30,16 @@
             </ul>
         </div>
         <div class="col-6">{% if request.user.profile.staff_access %}
-            <a href="{% url 'add_new_enemy' %}" role="button" class="btn btn-warning mb-3" aria-disabled="false">Add New Enemy</a>
+            <a href="{% url 'add_new_enemy' %}" role="button" class="btn btn-danger mb-3" aria-disabled="false">Add New Enemy</a>
             <h2>Enemies: </h2>
             <ul class="hero-list">
                 {% for e in enemies %}
-                <li class="hero-list-item">
+                <li class="hero-list-item enemy-item">
                     <a href="{% url 'single_hero' e.id %}" class="hero-list-name"> - {{ e.name }}</a>
                 </li>
                 {% endfor %}
             </ul>
-
             {% endif %}
-
         </div>
     </div>
 </section>

@@ -114,6 +114,10 @@ tr {
     color: #cf7815;
 }
 
+.enemy-item a:hover {
+    color: red;
+}
+
 
 /* Combat */
 
