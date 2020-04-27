@@ -17,14 +17,13 @@
             <ul class="hero-list">
                 {% for h in heroes %}
                 <li class="hero-list-item">
-                    <a href="{% url 'single_hero' h.id %}" class="hero-list-name"> - {{ h.name }}</a>
+                    <a href="{% url 'single_hero' h.id %}" class="hero-list-name"> - {{ h.name }}</a> <a href="{% url 'delete_base' h.id %}" class="hero-list-delete" onclick="return confirm('Are you sure you to delete {{ h.name }}?');"><i class="fas fa-dumpster-fire"></i></a>
                 </li>
                 {% endfor %}
             </ul>
         </div>
         <div class="col-6">{% if request.user.profile.staff_access %}
             <a href="{% url 'world_panel' %}" role="button" class="btn btn-warning mb-3" aria-disabled="false">World Panel</a> {% endif %}
-
         </div>
     </div>
 </section>

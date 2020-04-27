@@ -114,6 +114,15 @@ tr {
     color: #cf7815;
 }
 
+.hero-list-edit {
+    font-size: 15px;
+    padding-left: 1.25rem;
+}
+
+.hero-list-delete {
+    font-size: 15px;
+}
+
 .enemy-item a:hover {
     color: red;
 }
