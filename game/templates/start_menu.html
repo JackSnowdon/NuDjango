@@ -11,17 +11,20 @@
 
 <section class="hero">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 mb-3">
             <h2>Choose a Hero:</h2>
-            <ul class="hero-list">
-                {% for h in heroes %}
-                <li class="hero-list-item">
-                    <h5>{{ h.name }}</h5>
-                </li>
-                {% endfor %}
-            </ul>
         </div>
+        {% for h in heroes %}
+        <div class="col-4 text-center">
+            <h4>{{ h.name }}</h4>
+            {% if h in save_slots %}
+            <p>Resume Save</p>
+            {% else %}
+            <a href="{% url 'start_new_game' h.id %}" role="button" class="btn btn-warning" aria-disabled="false">Start New Game</a> {% endif %}
+        </div>
+        {% endfor %}
     </div>
+
 </section>
 
 {% endblock %}
