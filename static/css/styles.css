@@ -130,6 +130,7 @@ tr {
 
 /* Combat */
 
+#enemy-drops,
 .combat {
     display: none;
 }

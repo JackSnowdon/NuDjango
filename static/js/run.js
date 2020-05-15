@@ -4,16 +4,20 @@ window.localStorage;
 
 $(document).ready(function() {
 
-    // Player Object
+    // Objects for every fighter
 
-    var player = new Object();
-    player.maxHp = 0;
-    player.currentHp = 0;
-    player.power = 0;
-    player.speed = 0;
-    player.gold = 0;
-    player.xp = 0;
-    player.level = 1;
+    function Combatant(maxHp, currentHp, power, speed, gold, xp, level) {
+        this.maxHp = maxHp;
+        this.currentHp = currentHp;
+        this.power = power;
+        this.speed = speed;
+        this.gold = gold;
+        this.xp = xp;
+        this.level = level;
+    }
+
+    let player = new Combatant(0, 0, 0, 0, 0, 0, 0)
+    let enemy = new Combatant(0, 0, 0, 0, 0, 0, 0)
 
     // Setup Functions
 
@@ -26,23 +30,21 @@ $(document).ready(function() {
         player.gold = $("#hero-gold").text();
         player.xp = $("#hero-xp").text();
         player.level = $("#hero-level").text();
-        console.log(player);
     };
+
+    function setEnemyStats() {
+        enemy.name = $("#enemy-name").text();
+        enemy.maxHp = $("#enemy-max-hp").text();
+        enemy.currentHp = $("#enemy-current-hp").text();
+        enemy.power = $("#enemy-power").text();
+        enemy.speed = $("#enemy-speed").text();
+        enemy.gold = $("#enemy-gold").text();
+        enemy.xp = $("#enemy-xp").text();
+        enemy.level = $("#enemy-level").text();
+    }
 
     function getDiceRoll(x) {
         return Math.floor(Math.random() * x) + 1;
-    }
-
-    function takeHP() {
-        let dmg = getDiceRoll(player.power)
-        player.currentHp -= dmg;
-        if (areYouDead(player.currentHp)) {
-            player.currentHp = 0;
-            $("#hero-current-hp").text(player.currentHp);
-            $("#attackButton").attr("disabled", true);
-            $(".combat").fadeIn("slow");
-        }
-        $("#hero-current-hp").text(player.currentHp);
     }
 
     function areYouDead(hp) {
@@ -54,6 +56,8 @@ $(document).ready(function() {
     })
 
     setPlayerStats();
-
+    setEnemyStats();
+    console.log(player)
+    console.log(enemy)
 
 });

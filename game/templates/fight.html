@@ -1,5 +1,4 @@
-{% extends 'base.html' %} {% load static %} {% block page_title %} | {{ this_save }} {% endblock %} {% block content %}
-
+{% extends 'base.html' %} {% load static %} {% block page_title %} Combat | {{ this_save }} {% endblock %} {% block content %}
 
 <section class="hero mb-5">
     <div class="row">
@@ -35,6 +34,9 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-4 col-12">
+            <button id="attack-button" class="btn btn-success">Attack!</button>
+        </div>
     </div>
 </section>
 
@@ -43,25 +45,27 @@
         <div class="col-md-4 col-12">
             <div class="card text-center">
                 <div class="card-body">
-                    <h5 class="card-title"><span id="hero-name">{{ enemy }}</span></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><span id="hero-current-hp">{{ enemy.current_hp }}</span>/<span id="hero-max-hp">{{ enemy.max_hp }}</span></h6>
+                    <h5 class="card-title"><span id="enemy-name">{{ enemy }}</span></h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><span id="enemy-current-hp">{{ enemy.current_hp }}</span>/<span id="enemy-max-hp">{{ enemy.max_hp }}</span></h6>
                     <div class="row">
                         <div class="col-12">
-                            <p>Level <span id="hero-level">{{ enemy.level }}</span></p>
+                            <p>Level <span id="enemy-level">{{ enemy.level }}</span></p>
+                        </div>
+                    </div>
+                    <div class="row" id="enemy-drops">
+                        <div class="col-6">
+                            <h5>Gold: <span id="enemy-gold">{{ enemy.gold }}</span></h5>
                         </div>
                         <div class="col-6">
-                            <h5>Gold: <span id="hero-gold">{{ enemy.gold }}</span></h5>
-                        </div>
-                        <div class="col-6">
-                            <h5>XP: <span id="hero-xp">{{ enemy.xp }}</span></h5>
+                            <h5>XP: <span id="enemy-xp">{{ enemy.xp }}</span></h5>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            <h5>Power: <span id="hero-power">{{ enemy.power }}</span></h5>
+                            <h5>Power: <span id="enemy-power">{{ enemy.power }}</span></h5>
                         </div>
                         <div class="col-6">
-                            <h5>Speed: <span id="hero-speed">{{ enemy.speed }}</span></h5>
+                            <h5>Speed: <span id="enemy-speed">{{ enemy.speed }}</span></h5>
                         </div>
                     </div>
                 </div>
@@ -70,4 +74,6 @@
     </div>
 </section>
 
+{% endblock %} {% block script_js %}
+<script type="text/javascript" src="{% static 'js/run.js' %}"></script>
 {% endblock %}
