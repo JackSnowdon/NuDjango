@@ -10,14 +10,14 @@
 
 <div class="row">
     <div class="col-12 text-center">
-        <h1>Editing {{ this_base }}</h1>
+        <h2>Editing {{ this_base }}</h2>
     </div>
 </div>
 
 <form role="form" method="post" id="edit_base">
     <div class="form-group body-text">
         {% csrf_token %}
-        <p>Edit {{ this_base }} Stats:</p>
+        <h4>Edit {{ this_base }}:</h4>
         <div class="form-row">
             <div class="form-group col-md-4 mb-0">
                 {{ edit_form.name|as_crispy_field }}

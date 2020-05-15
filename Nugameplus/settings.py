@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'home',
     'accounts',
     'world',
+    'game',
     'crispy_forms',
 ]
 

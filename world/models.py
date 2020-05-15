@@ -7,17 +7,19 @@ from accounts.models import Profile
 Player = "Player"
 Enemy = "Enemy"
 
+
 ALIGNCHOICES = (
         (Player, "Player"),
         (Enemy, "Enemy"),
     )
+    
 
 class Base(models.Model):
     name = models.CharField(max_length=255)
     current_hp = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(50000)], default=100)
     max_hp = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(50000)], default=100)
-    power = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=1)
-    speed = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=1)
+    power = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)], default=10)
+    speed = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)], default=5)
     gold = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(250000)], default=1)
     xp = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(100000)], default=1)
     level = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=1)
@@ -27,3 +29,4 @@ class Base(models.Model):
 
     def __str__(self):
         return self.name
+

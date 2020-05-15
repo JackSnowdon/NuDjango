@@ -4,14 +4,16 @@
 <section class="header">
     <div class="row mb-5">
         <div class="col-12 text-center">
-            <h1 class="weighted-lead">World Index!</h1>
+            <h1 class="weighted-lead mb-3">World Index!</h1>
+            {% if request.user.profile.staff_access %}
+            <a href="{% url 'world_panel' %}" role="button" class="btn btn-warning mb-3" aria-disabled="false">World Panel</a> {% endif %}
         </div>
     </div>
 </section>
 
 <section class="hero">
     <div class="row">
-        <div class="col-6">
+        <div class="col-12">
             <a href="{% url 'add_new_hero' %}" role="button" class="btn btn-success mb-3" aria-disabled="false">Add New Hero</a>
             <h2>Heroes: </h2>
             <ul class="hero-list">
@@ -21,9 +23,6 @@
                 </li>
                 {% endfor %}
             </ul>
-        </div>
-        <div class="col-6">{% if request.user.profile.staff_access %}
-            <a href="{% url 'world_panel' %}" role="button" class="btn btn-warning mb-3" aria-disabled="false">World Panel</a> {% endif %}
         </div>
     </div>
 </section>

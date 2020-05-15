@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% load static %} {% block page_title %} | Start Menu {% endblock %} {% block content %}
+
+
+<section class="header">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="weighted-lead mb-3">Enter The World Of Grindhouse</h1>
+        </div>
+    </div>
+</section>
+
+<section class="hero">
+    <div class="row">
+        <div class="col-12">
+            <h2>Choose a Hero:</h2>
+            <ul class="hero-list">
+                {% for h in heroes %}
+                <li class="hero-list-item">
+                    <h5>{{ h.name }}</h5>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
