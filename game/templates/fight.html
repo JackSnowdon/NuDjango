@@ -38,10 +38,34 @@
     </div>
 </section>
 
-<section class="action-buttons">
+<section class="enemy-stats">
     <div class="row">
-        <div class="col-3">
-            <a href="{% url 'fight' this_save.id %}" role="button" class="btn btn-success mb-3" aria-disabled="false">Fight</a>
+        <div class="col-md-4 col-12">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title"><span id="hero-name">{{ enemy }}</span></h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><span id="hero-current-hp">{{ enemy.current_hp }}</span>/<span id="hero-max-hp">{{ enemy.max_hp }}</span></h6>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>Level <span id="hero-level">{{ enemy.level }}</span></p>
+                        </div>
+                        <div class="col-6">
+                            <h5>Gold: <span id="hero-gold">{{ enemy.gold }}</span></h5>
+                        </div>
+                        <div class="col-6">
+                            <h5>XP: <span id="hero-xp">{{ enemy.xp }}</span></h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <h5>Power: <span id="hero-power">{{ enemy.power }}</span></h5>
+                        </div>
+                        <div class="col-6">
+                            <h5>Speed: <span id="hero-speed">{{ enemy.speed }}</span></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

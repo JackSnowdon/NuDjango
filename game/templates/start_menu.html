@@ -15,7 +15,7 @@
             <h2>Choose a Hero:</h2>
         </div>
         {% for h in heroes %}
-        <div class="col-4 text-center">
+        <div class="col-6 text-center">
             <h4>{{ h.name }}</h4>
             {% if h in save_slots %}
             <a href="{% url 'save_slot' h.save_slot.id %}" role="button" class="btn btn-success mb-3" aria-disabled="false">Resume Game</a> <br>

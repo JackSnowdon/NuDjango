@@ -41,6 +41,14 @@ def save_slot(request, pk):
 
 
 @login_required
+def fight(request, pk):
+    this_save = get_object_or_404(SaveSlot, pk=pk)
+    enemy = Base.objects.get(name="Goblina")
+    print(enemy)
+    return render(request, "fight.html", {"this_save": this_save, "enemy": enemy})
+
+
+@login_required
 def delete_save(request, pk):
     this_save = get_object_or_404(SaveSlot, pk=pk)
     profile = request.user.profile
