@@ -7,7 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class SaveSlot(models.Model):
     save_name = models.CharField(max_length=255)
-    hero = models.OneToOneField(Base, on_delete=models.CASCADE)
+    hero = models.OneToOneField(Base, on_delete=models.CASCADE, related_name="save_slot")
     kills = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(100000)], default=0
     )
