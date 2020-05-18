@@ -21,7 +21,7 @@ $(document).ready(function() {
 
     // Setup Functions
 
-    function setPlayerStats() {
+    function getPlayerStats() {
         player.name = $("#hero-name").text();
         player.maxHp = $("#hero-max-hp").text();
         player.currentHp = $("#hero-current-hp").text();
@@ -32,7 +32,7 @@ $(document).ready(function() {
         player.level = $("#hero-level").text();
     };
 
-    function setEnemyStats() {
+    function getEnemyStats() {
         enemy.name = $("#enemy-name").text();
         enemy.maxHp = $("#enemy-max-hp").text();
         enemy.currentHp = $("#enemy-current-hp").text();
@@ -43,6 +43,13 @@ $(document).ready(function() {
         enemy.level = $("#enemy-level").text();
     }
 
+    getPlayerStats();
+    getEnemyStats();
+
+
+    // Combat Functions 
+
+
     function getDiceRoll(x) {
         return Math.floor(Math.random() * x) + 1;
     }
@@ -51,13 +58,30 @@ $(document).ready(function() {
         return hp <= 0;
     }
 
-    $("#attackButton").click(function() {
-        takeHP();
-    })
+    function basicAttack(user) {
+        return Math.floor((user.power / 2) + getDiceRoll(user.power))
+    }
 
-    setPlayerStats();
-    setEnemyStats();
-    console.log(player)
-    console.log(enemy)
+    function playerAttackRound() {
+        $("#attack-button").attr("disabled", true);
+        let atck = basicAttack(player);
+        enemy.currentHp -= atck;
+        $("#enemy-current-hp").html(enemy.currentHp);
+        $("#player-result").html(player.name + " Hits " + enemy.name + " for " + atck + " Hit Points!");
+
+        if (areYouDead(enemy.currentHp)) {
+            $("#enemy-current-hp").html(0)
+            $("#win-results").html(player.name + " Wins!")
+        }
+
+        setTimeout(function() {
+            $("#attack-button").attr("disabled", false);
+        }, 1500)
+
+    }
+
+    $("#attack-button").click(function() {
+        playerAttackRound()
+    })
 
 });

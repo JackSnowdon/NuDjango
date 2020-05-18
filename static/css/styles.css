@@ -130,9 +130,18 @@ tr {
 
 /* Combat */
 
-#enemy-drops,
-.combat {
+.combat {}
+
+#enemy-drops {
     display: none;
+}
+
+#hero-name {
+    color: #14c50d;
+}
+
+#enemy-name {
+    color: #ac3430;
 }
 
 

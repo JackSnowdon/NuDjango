@@ -53,10 +53,10 @@
             </div>
         </div>
         <div class="col-md-8 col-12">
-            {% if hero.save_slot %}
+            {% if hero.alignment == 'Player' %} {% if hero.save_slot %}
             <a href="{% url 'save_slot' hero.save_slot.id %}" role="button" class="btn btn-success mb-3" aria-disabled="false">Resume Game</a> <br>
             <a href="{% url 'delete_save' hero.save_slot.id %}" role="button" class="btn btn-danger" aria-disabled="false" onclick="return confirm('Are you sure you to delete {{ hero.name }} saves?');">Delete Save</a> {% else %}
-            <a href="{% url 'start_new_game' hero.id %}" role="button" class="btn btn-warning" aria-disabled="false">Start New Game</a> {% endif %}
+            <a href="{% url 'start_new_game' hero.id %}" role="button" class="btn btn-warning" aria-disabled="false">Start New Game</a> {% endif %} {% endif %}
         </div>
     </div>
 </section>
