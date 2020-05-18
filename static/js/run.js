@@ -63,25 +63,34 @@ $(document).ready(function() {
     }
 
     function playerAttackRound() {
-        $("#attack-button").attr("disabled", true);
         let atck = basicAttack(player);
         enemy.currentHp -= atck;
         $("#enemy-current-hp").html(enemy.currentHp);
         $("#player-result").html(player.name + " Hits " + enemy.name + " for " + atck + " Hit Points!");
+    }
 
-        if (areYouDead(enemy.currentHp)) {
-            $("#enemy-current-hp").html(0)
-            $("#win-results").html(player.name + " Wins!")
-        }
-
-        setTimeout(function() {
-            $("#attack-button").attr("disabled", false);
-        }, 1500)
-
+    function enemyAttackRound() {
+        let atck = basicAttack(enemy);
+        player.currentHp -= (atck * 3);
+        $("#hero-current-hp").html(player.currentHp);
+        $("#enemy-result").html(enemy.name + " Hits " + player.name + " for " + atck + " Hit Points!");
     }
 
     $("#attack-button").click(function() {
+        $("#attack-button").attr("disabled", true);
         playerAttackRound()
+        if (areYouDead(enemy.currentHp)) {
+            $("#enemy-current-hp").html(0)
+            $("#win-results").html(player.name + " Wins!")
+        } else {
+            setTimeout(function() {
+                enemyAttackRound()
+                if (areYouDead(player.currentHp)) {
+                    $("#hero-current-hp").html(0);
+                    $("#win-results").html(enemy.name + " Wins!")
+                }
+                $("#attack-button").attr("disabled", false);
+            }, 1500)
+        }
     })
-
 });
