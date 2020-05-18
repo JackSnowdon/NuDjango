@@ -7,6 +7,8 @@ from .forms import *
 
 # Create your views here.
 
+# Start/Save/Load/Delete Game Views
+
 @login_required
 def start_menu(request):
     profile = request.user.profile
@@ -26,6 +28,13 @@ def start_new_game(request, pk):
         if new_game_form.is_valid():
             form = new_game_form.save(commit=False)
             form.hero = chosen_hero
+            form.current_hp = chosen_hero.current_hp
+            form.max_hp = chosen_hero.max_hp
+            form.power = chosen_hero.power
+            form.speed = chosen_hero.speed
+            form.gold = chosen_hero.gold
+            form.xp = chosen_hero.xp
+            level = chosen_hero.level
             messages.error(request, "{0} Entered The Grindhouse".format(form.hero), extra_tags="alert")
             form.save()
             return redirect("start_menu")
@@ -41,14 +50,6 @@ def save_slot(request, pk):
 
 
 @login_required
-def fight(request, pk):
-    this_save = get_object_or_404(SaveSlot, pk=pk)
-    enemy = Base.objects.get(name="Goblina")
-    print(enemy)
-    return render(request, "fight.html", {"this_save": this_save, "enemy": enemy})
-
-
-@login_required
 def delete_save(request, pk):
     this_save = get_object_or_404(SaveSlot, pk=pk)
     profile = request.user.profile
@@ -61,3 +62,16 @@ def delete_save(request, pk):
             request, "You Don't Have The Required Permissions", extra_tags="alert"
         )
         return redirect("start_menu") 
+
+
+# Combat Views
+
+
+@login_required
+def fight(request, pk):
+    this_save = get_object_or_404(SaveSlot, pk=pk)
+    enemy = Base.objects.get(name="Goblina")
+    print(enemy)
+    return render(request, "fight.html", {"this_save": this_save, "enemy": enemy})
+
+

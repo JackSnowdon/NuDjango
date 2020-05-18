@@ -24,9 +24,9 @@
 </section>
 
 <section class="hero mb-5">
-    <div class="row">
+    <div class="row  text-center">
         <div class="col-md-4 col-12">
-            <div class="card text-center">
+            <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"><span id="hero-name">{{ hero }}</span></h5>
                     <h6 class="card-subtitle mb-2 text-muted"><span id="hero-current-hp">{{ hero.current_hp }}</span>/<span id="hero-max-hp">{{ hero.max_hp }}</span></h6>
@@ -52,20 +52,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8 col-12 text-center">
-            <button class="btn btn-success" id="attackButton">Attack Button</button>
+        <div class="col-md-8 col-12">
+            {% if hero.save_slot %}
+            <a href="{% url 'save_slot' hero.save_slot.id %}" role="button" class="btn btn-success mb-3" aria-disabled="false">Resume Game</a> <br>
+            <a href="{% url 'delete_save' hero.save_slot.id %}" role="button" class="btn btn-danger" aria-disabled="false" onclick="return confirm('Are you sure you to delete {{ hero.name }} saves?');">Delete Save</a> {% else %}
+            <a href="{% url 'start_new_game' hero.id %}" role="button" class="btn btn-warning" aria-disabled="false">Start New Game</a> {% endif %}
         </div>
     </div>
 </section>
 
-<section class="combat">
-    <div class="row text-center">
-        <div class="col-12">
-            <a href="#" role="button" class="btn btn-warning" aria-disabled="false">Save Combat</a>
-        </div>
-    </div>
-</section>
 
-{% endblock %} {% block script_js %}
-<script type="text/javascript" src="{% static 'js/run.js' %}"></script>
 {% endblock %}
