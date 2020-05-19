@@ -71,7 +71,15 @@ def delete_save(request, pk):
 def fight(request, pk):
     this_save = get_object_or_404(SaveSlot, pk=pk)
     enemy = Base.objects.get(name="Goblina")
-    print(enemy)
     return render(request, "fight.html", {"this_save": this_save, "enemy": enemy})
 
 
+@login_required
+def win_fight(request, pk, enemypk):
+    this_save = get_object_or_404(SaveSlot, pk=pk)
+    enemy = get_object_or_404(Base, pk=enemypk)
+    this_save.kills += 1 
+    print(enemy)
+    this_save.save()
+    return redirect('save_slot', pk=this_save.id)
+    

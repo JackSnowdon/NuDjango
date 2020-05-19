@@ -62,6 +62,10 @@ $(document).ready(function() {
         return Math.floor((user.power / 2) + getDiceRoll(user.power))
     }
 
+
+    // Action Actions
+
+
     function playerAttackRound() {
         let atck = basicAttack(player);
         enemy.currentHp -= atck;
@@ -71,10 +75,13 @@ $(document).ready(function() {
 
     function enemyAttackRound() {
         let atck = basicAttack(enemy);
-        player.currentHp -= (atck * 3);
+        player.currentHp -= atck;
         $("#hero-current-hp").html(player.currentHp);
         $("#enemy-result").html(enemy.name + " Hits " + player.name + " for " + atck + " Hit Points!");
     }
+
+
+    // Gameplay Flow
 
     $("#attack-button").click(function() {
         $("#attack-button").attr("disabled", true);
@@ -82,14 +89,20 @@ $(document).ready(function() {
         if (areYouDead(enemy.currentHp)) {
             $("#enemy-current-hp").html(0)
             $("#win-results").html(player.name + " Wins!")
+            $("#win-return-button").show()
         } else {
+
+            // Enemy Turn
+
             setTimeout(function() {
                 enemyAttackRound()
                 if (areYouDead(player.currentHp)) {
                     $("#hero-current-hp").html(0);
                     $("#win-results").html(enemy.name + " Wins!")
+                    $("#lose-return-button").show()
+                } else {
+                    $("#attack-button").attr("disabled", false);
                 }
-                $("#attack-button").attr("disabled", false);
             }, 1500)
         }
     })

@@ -144,6 +144,10 @@ tr {
     color: #ac3430;
 }
 
+#lose-return-button {
+    display: none;
+}
+
 
 /* Breaks */
 
