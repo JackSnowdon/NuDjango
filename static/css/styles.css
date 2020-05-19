@@ -144,6 +144,7 @@ tr {
     color: #ac3430;
 }
 
+#win-return-button,
 #lose-return-button {
     display: none;
 }

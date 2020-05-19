@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from world.models import *
 from .models import *
 from .forms import *
+import random
 
 # Create your views here.
 
@@ -75,11 +76,26 @@ def fight(request, pk):
 
 
 @login_required
-def win_fight(request, pk, enemypk):
+def win_fight(request, pk, enemypk, result):
     this_save = get_object_or_404(SaveSlot, pk=pk)
     enemy = get_object_or_404(Base, pk=enemypk)
-    this_save.kills += 1 
-    print(enemy)
+    if result == 1:
+        gold, xp = generate_results(enemy)
+        this_save.gold += gold
+        this_save.xp += xp
+        this_save.kills += 1 
+        messages.error(
+            request, "You Won {0} Gold and Gained {1} Xp!".format(gold, xp), extra_tags="alert"
+        )
+    else:
+        messages.error(
+            request, "You Lost!", extra_tags="alert"
+        )
     this_save.save()
     return redirect('save_slot', pk=this_save.id)
     
+
+def generate_results(loser):
+    gold = random.randint(loser.gold / 2, loser.gold * 2)
+    xp = random.randint(loser.xp, loser.xp * 2)
+    return gold, xp
